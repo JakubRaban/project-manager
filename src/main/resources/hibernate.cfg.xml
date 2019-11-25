@@ -10,5 +10,11 @@
         <property name="connection.username">sql7313101</property>
         <property name="connection.password">[password]</property>
         <property name="hbm2ddl.auto">update</property>
+      
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Critic"></mapping>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Project"></mapping>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.ProjectGroup"></mapping>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Rating"></mapping>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Participant"></mapping>
     </session-factory>
 </hibernate-configuration>
