@@ -8,13 +8,12 @@
         <property name="dialect">org.hibernate.dialect.MySQL55Dialect</property>
         <property name="connection.url">jdbc:mysql://sql7.freesqldatabase.com:3306/sql7313101</property>
         <property name="connection.username">sql7313101</property>
-        <property name="connection.password">[password]</property>
+        <property name="connection.password">ESdy1DIfPU</property>
         <property name="hbm2ddl.auto">update</property>
-      
-        <mapping class="pl.edu.agh.gastronomiastosowana.model.Critic"></mapping>
-        <mapping class="pl.edu.agh.gastronomiastosowana.model.Project"></mapping>
-        <mapping class="pl.edu.agh.gastronomiastosowana.model.ProjectGroup"></mapping>
-        <mapping class="pl.edu.agh.gastronomiastosowana.model.Rating"></mapping>
-        <mapping class="pl.edu.agh.gastronomiastosowana.model.Participant"></mapping>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Critic"/>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Project"/>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.ProjectGroup"/>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Rating"/>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Participant"/>
     </session-factory>
 </hibernate-configuration>
