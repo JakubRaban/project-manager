@@ -53,6 +53,14 @@ public class GenericDao<T> {
         tx.commit();
     }
 
+    public void delete(final T object) {
+        Session session = SessionService.getSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(object);
+        tx.commit();;
+
+    }
+
     public Session currentSession() {
         return SessionService.getSession();
     }
