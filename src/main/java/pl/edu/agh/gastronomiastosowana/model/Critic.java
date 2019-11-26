@@ -33,6 +33,8 @@ public class Critic {
         return name;
     }
 
+    @Access(AccessType.PROPERTY)
+    @Column(nullable = false)
     public String getName() {
         return name.get();
     }
@@ -49,6 +51,8 @@ public class Critic {
         this.surname.set(surname);
     }
 
+    @Access(AccessType.PROPERTY)
+    @Column(nullable = false)
     public String getSurname(String surname) {
         return this.surname.get();
     }
@@ -61,6 +65,8 @@ public class Critic {
         this.email.set(email);
     }
 
+    @Access(AccessType.PROPERTY)
+    @Column(nullable = false, unique = true)
     public String getEmail() {
         return this.email.get();
     }

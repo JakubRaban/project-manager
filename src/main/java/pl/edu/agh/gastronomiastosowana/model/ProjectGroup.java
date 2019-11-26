@@ -17,14 +17,10 @@ public class ProjectGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int projectGroupID;
-    @Transient
-    private StringProperty groupName;
-    @Transient
-    private BooleanProperty active;
-    @Transient
-    private ObjectProperty<LocalDate> creationDate;
-    @Transient
-    private ObjectProperty<Project> project;
+    @Transient private StringProperty groupName;
+    @Transient private BooleanProperty active;
+    @Transient private ObjectProperty<LocalDate> creationDate;
+    @Transient private ObjectProperty<Project> project;
 
     @ManyToOne
     private Participant chief;

@@ -1,10 +1,11 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
 
+import javafx.beans.property.*;
+import javafx.collections.ObservableSet;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Participant {
@@ -13,85 +14,129 @@ public class Participant {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int participantID;
 
-    @Column(nullable=false)
-    private String name;
+    @Transient private StringProperty name;
 
-    @Column(nullable=false)
-    private String surname;
+    @Transient private StringProperty surname;
 
-    @Column(nullable=false)
-    private int age;
+    @Transient private IntegerProperty age;
 
-    @Column(unique = true, nullable = false)
-    private String email;
+    @Transient private StringProperty email;
 
-    @Column(nullable=false)
-    private LocalDate registrationDate;
+    @Transient private ObjectProperty<LocalDate> registrationDate;
 
     @ManyToMany
-    private Set<ProjectGroup> worksFor;
+    @Transient private SetProperty<ProjectGroup> worksFor;
 
     @OneToMany(mappedBy = "chief")
-    private Set<ProjectGroup> managedProjectGroups;
+    @Transient private SetProperty<ProjectGroup> managedProjectGroups;
 
 
 
     public Participant(String name, String surname, int age, String email){
-        worksFor = new HashSet<ProjectGroup>();
-        managedProjectGroups = new HashSet<ProjectGroup>();
+        this();
 
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-        this.email = email;
-        this.registrationDate = LocalDate.now();
+        setName(name);
+        setSurname(surname);
+        setAge(age);
+        setEmail(email);
+        setRegistrationDate(LocalDate.now());
+
     }
 
     public Participant(){
-        //hib
+        worksFor = new SimpleSetProperty<ProjectGroup>();
+        managedProjectGroups = new SimpleSetProperty<ProjectGroup>();
+
+        name = new SimpleStringProperty(this, "name");
+        surname = new SimpleStringProperty(this, "surname");
+        age = new SimpleIntegerProperty(this, "age");
+        email = new SimpleStringProperty(this, "email");
+        registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
     }
 
-    public Set<ProjectGroup> getWorksFor() {
-        return worksFor;
-    }
-
-    public Set<ProjectGroup> getManagedProjectGroups() {
-        return managedProjectGroups;
-    }
-
+    @Access(AccessType.PROPERTY)
+    @Column(nullable=false)
     public String getName() {
+        return name.get();
+    }
+    public void setName(String name) {
+        this.name.set(name);
+    }
+    public StringProperty nameProperty(){
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    @Access(AccessType.PROPERTY)
+    @Column(nullable=false)
     public String getSurname() {
+        return surname.get();
+    }
+    public void setSurname(String surname) {
+        this.surname.set(surname);
+    }
+    public StringProperty surnameProperty(){
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
+    @Access(AccessType.PROPERTY)
+    @Column(nullable=false)
     public int getAge() {
+        return age.get();
+    }
+    public void setAge(int age) {
+        this.age.set(age);
+    }
+    public IntegerProperty ageProperty() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
+    @Access(AccessType.PROPERTY)
+    @Column(nullable=false, unique = true)
     public String getEmail() {
+        return email.get();
+    }
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+    public StringProperty emailProperty(){
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Access(AccessType.PROPERTY)
+    @Column(nullable=false)
+    public LocalDate getRegistrationDate() {
+        return registrationDate.get();
+    }
+    public void setRegistrationDate(LocalDate registrationDateProperty) {
+        this.registrationDate.set(registrationDateProperty);
+    }
+    public ObjectProperty<LocalDate> registrationDateProperty() {
+        return registrationDate;
     }
 
-    public int getParticipantID() {
-        return participantID;
+    @Access(AccessType.PROPERTY)
+    @ManyToMany
+    public ObservableSet<ProjectGroup> getWorksFor() {
+        return worksFor.get();
     }
+    public void setWorksFor(ObservableSet<ProjectGroup> projectGroups){
+        this.worksFor.set(projectGroups);
+    }
+    public SetProperty<ProjectGroup> worksForProperty(){
+        return worksFor;
+    }
+
+    @Access(AccessType.PROPERTY)
+    @OneToMany(mappedBy = "chief")
+    public ObservableSet<ProjectGroup> getManagedProjectGroups() {
+        return managedProjectGroups.get();
+    }
+    public void setManagedProjectGroups(ObservableSet<ProjectGroup> projectGroups){
+        this.managedProjectGroups.set(projectGroups);
+    }
+    public SetProperty<ProjectGroup> managedProjectGroupsProperty(){
+        return managedProjectGroups;
+    }
+
+
 }
