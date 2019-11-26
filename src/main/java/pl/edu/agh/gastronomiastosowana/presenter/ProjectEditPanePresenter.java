@@ -7,20 +7,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import pl.edu.agh.gastronomiastosowana.model.Project;
+import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 public class ProjectEditPanePresenter {
-    public enum InputType {
-        NEW,
-        EDIT
-    }
-
     private Window window;
-    private InputType inputType;
-    private Project project;
     private boolean accepted;
+    private ItemInputType itemInputType;
+    private Project project;
 
     @FXML private Label dialogTypeLabel;
     @FXML private TextField projectNameInput;
@@ -31,13 +27,14 @@ public class ProjectEditPanePresenter {
 
     @FXML
     private void initialize() {
+        window = null;
         accepted = false;
-        setInputType(InputType.NEW);
+        setItemInputType(ItemInputType.NEW_ITEM);
         setProject(new Project());
     }
 
     @FXML
-    private void accept(ActionEvent event) {
+    private void accept() {
         Optional<String> error = validateInput();
         if (error.isPresent()) {
             errorLabel.setText(error.get());
@@ -50,19 +47,17 @@ public class ProjectEditPanePresenter {
     }
 
     @FXML
-    private void reject(ActionEvent event) {
+    private void reject() {
         accepted = false;
         window.hide();
     }
 
     private Optional<String> validateInput() {
-        String name = projectNameInput.getText();
-        if (name != null)
-            name = name.trim();
+        String name = Optional.ofNullable(projectNameInput.getText()).orElse("").trim();
         LocalDate startDate = startDateInput.getValue();
         LocalDate endDate = endDateInput.getValue();
 
-        if (name == null || name.isEmpty())
+        if (name.isEmpty())
             return Optional.of("Group name cannot be empty");
         if (startDate == null)
             return Optional.of("Start date cannot be empty");
@@ -73,7 +68,7 @@ public class ProjectEditPanePresenter {
     }
 
     private void updateProject() {
-        project.setName(projectNameInput.getText());
+        project.setName(projectNameInput.getText().trim());
         project.setStartDate(startDateInput.getValue());
         project.setEndDate(endDateInput.getValue());
     }
@@ -88,17 +83,17 @@ public class ProjectEditPanePresenter {
         endDateInput.setValue(null);
     }
 
-    public InputType getInputType() {
-        return inputType;
+    public ItemInputType getItemInputType() {
+        return itemInputType;
     }
 
-    public void setInputType(InputType inputType) {
-        this.inputType = inputType;
-        switch (this.inputType) {
-            case NEW:
+    public void setItemInputType(ItemInputType itemInputType) {
+        this.itemInputType = itemInputType;
+        switch (this.itemInputType) {
+            case NEW_ITEM:
                 dialogTypeLabel.setText("Create new project");
                 break;
-            case EDIT:
+            case EDIT_ITEM:
                 dialogTypeLabel.setText("Edit project");
                 break;
         }
@@ -129,7 +124,7 @@ public class ProjectEditPanePresenter {
 
     public void setWindow(Window window) {
         this.window = window;
-        window.setOnCloseRequest(event -> reject(null));
+        window.setOnCloseRequest(event -> reject());
     }
 
     public boolean isAccepted() {

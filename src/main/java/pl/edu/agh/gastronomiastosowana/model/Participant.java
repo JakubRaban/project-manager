@@ -15,26 +15,16 @@ import java.util.Set;
 
 @Entity
 public class Participant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int participantID;
-
     @Transient private StringProperty name;
-
     @Transient private StringProperty surname;
-
     @Transient private IntegerProperty age;
-
     @Transient private StringProperty email;
-
     @Transient private ObjectProperty<LocalDate> registrationDate;
-
     @Transient private SetProperty<ProjectGroup> worksFor;
-
     @Transient private SetProperty<ProjectGroup> managedProjectGroups;
-
-
 
     public Participant(String name, String surname, int age, String email){
         this();

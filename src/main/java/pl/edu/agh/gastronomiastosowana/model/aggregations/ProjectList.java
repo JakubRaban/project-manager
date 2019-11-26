@@ -1,11 +1,9 @@
-package pl.edu.agh.gastronomiastosowana.model.lists;
+package pl.edu.agh.gastronomiastosowana.model.aggregations;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ObservableList;
 import pl.edu.agh.gastronomiastosowana.model.Project;
-
-import java.util.Collection;
 
 public class ProjectList {
     private ListProperty<Project> projects;
