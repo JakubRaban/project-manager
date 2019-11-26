@@ -40,7 +40,6 @@ public class Rating {
         this.projectGroup.getRatings().add(this);
 
         this.critic = critic;
-        this.critic.getRatings().add(this);
 
     }
     public Rating(){

@@ -1,6 +1,10 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
 import com.sun.istack.NotNull;
+import javafx.beans.property.SetProperty;
+import javafx.beans.property.SimpleSetProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,53 +16,53 @@ public class Critic {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int criticID;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String surname;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @OneToMany(mappedBy = "critic")
-    private Set<Rating> ratings = new HashSet<>();;
+    @Transient private StringProperty name;
+    @Transient private StringProperty surname;
+    @Transient private StringProperty email;
 
     public Critic(String name, String surname, String email){
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
+        this.name = new SimpleStringProperty(this, "name");
+        this.surname = new SimpleStringProperty(this, "surname");
+        this.email = new SimpleStringProperty(this, "email");
     }
     public Critic(){
         //hib
     }
 
-    public String getName() {
+    public StringProperty nameProperty() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name.get();
     }
 
-    public String getSurname() {
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public StringProperty surnameProperty() {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setSurnameProperty(String surname) {
+        this.surname.set(surname);
     }
 
-    public String getEmail() {
+    public String getSurname(String surname) {
+        return this.surname.get();
+    }
+
+    public StringProperty emailProperty() {
         return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email.set(email);
     }
 
-    public Set<Rating> getRatings() {
-        return ratings;
+    public String getEmail() {
+        return this.email.get();
     }
 
     public int getCriticID() {
