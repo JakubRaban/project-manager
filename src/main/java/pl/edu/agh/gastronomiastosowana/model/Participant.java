@@ -33,7 +33,6 @@ public class Participant {
         setSurname(surname);
         setAge(age);
         setEmail(email);
-        setRegistrationDate(LocalDate.now());
 
     }
 
@@ -46,6 +45,10 @@ public class Participant {
         age = new SimpleIntegerProperty(this, "age");
         email = new SimpleStringProperty(this, "email");
         registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
+
+        setWorksFor(new HashSet<ProjectGroup>());
+        setManagedProjectGroups(new HashSet<ProjectGroup>());
+        setRegistrationDate(LocalDate.now());
     }
 
     @Access(AccessType.PROPERTY)

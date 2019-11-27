@@ -73,7 +73,7 @@ public class ParticipantEditPanePresenter {
     private void updateParticipant() {
         participant.setName(nameInput.getText().trim());
         participant.setSurname(surnameInput.getText().trim());
-        participant.setAge(Integer.parseInt(surnameInput.getText()));
+        participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
     }
 
@@ -81,7 +81,7 @@ public class ParticipantEditPanePresenter {
         return itemInputType;
     }
 
-    private void setItemInputType(ItemInputType itemInputType) {
+    public void setItemInputType(ItemInputType itemInputType) {
         this.itemInputType = itemInputType;
         switch (this.itemInputType) {
             case NEW_ITEM:
@@ -99,6 +99,18 @@ public class ParticipantEditPanePresenter {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+        if(participant == null){
+            nameInput.clear();
+            surnameInput.clear();
+            ageInput.clear();
+            emailInput.clear();
+        }
+        else{
+            nameInput.setText(participant.getName());
+            surnameInput.setText(participant.getSurname());
+            ageInput.setText(Integer.toString(participant.getAge()));
+            emailInput.setText(participant.getEmail());
+        }
     }
 
     public void setWindow(Window window) {
