@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import pl.edu.agh.gastronomiastosowana.controller.ProjectViewController;
 
 public class MainWindow extends Application {
 
@@ -16,5 +15,7 @@ public class MainWindow extends Application {
         primaryStage.setTitle("GastroFaza");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+
+
     }
 }

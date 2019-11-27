@@ -15,14 +15,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int projectID;
-    @Transient
-    private StringProperty name;
-    @Transient
-    private ObjectProperty<LocalDate> startDate;
-    @Transient
-    private ObjectProperty<LocalDate> endDate;
-    @Transient
-    private ObjectProperty<ProjectGroup> projectGroup;
+    @Transient private StringProperty name;
+    @Transient private ObjectProperty<LocalDate> startDate;
+    @Transient private ObjectProperty<LocalDate> endDate;
+    @Transient private ObjectProperty<ProjectGroup> projectGroup;
 
     public Project(String projectName){
         this();

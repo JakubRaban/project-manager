@@ -2,15 +2,10 @@ package pl.edu.agh.gastronomiastosowana.model;
 
 
 import javafx.beans.property.*;
-import javafx.collections.ObservableSet;
 import javafx.collections.FXCollections;
-import org.hibernate.engine.internal.Collections;
-
-
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
