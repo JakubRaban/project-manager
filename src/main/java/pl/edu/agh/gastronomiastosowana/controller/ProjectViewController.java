@@ -7,39 +7,33 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.lists.ProjectList;
+import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class ProjectViewController {
     private ProjectList projectList;
     private ProjectDao projectDao;
 
-    @FXML
-    private TableView<Project> tableView;
+    @FXML private TableView<Project> tableView;
 
-    @FXML
-    private Button addNewButton;
-    @FXML
-    private Button editButton;
-    @FXML
-    private Button removeButton;
+    @FXML private Button addNewButton;
+    @FXML private Button editButton;
+    @FXML private Button removeButton;
 
-    @FXML
-    private Label projectGroupNameLabel;
-    @FXML
-    private Label activeLabel;
-    @FXML
-    private Label creationDateLabel;
-    @FXML
-    private Label chiefLabel;
-    @FXML
-    private Label participantCountLabel;
-    @FXML
-    private Label averageScoreLabel;
+    @FXML private Label projectGroupNameLabel;
+    @FXML private Label activeLabel;
+    @FXML private Label creationDateLabel;
+    @FXML private Label chiefLabel;
+    @FXML private Label participantCountLabel;
+    @FXML private Label averageScoreLabel;
 
     @FXML
     private void initialize() {
@@ -63,6 +57,7 @@ public class ProjectViewController {
     }
 
     private void bindProjectGroupProperties() {
+        // TODO: fix warnings
         ObjectBinding<String> groupNameBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "projectGroup", "groupName");
         projectGroupNameLabel.textProperty().bind(groupNameBinding);
 
@@ -98,14 +93,46 @@ public class ProjectViewController {
 
     @FXML
     void addNewProject() {
-        Project selectedProject = tableView.getSelectionModel().getSelectedItem();
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectEditPane.fxml"));
+            ProjectEditPanePresenter presenter = loader.getController();
+            presenter.setInputType(ProjectEditPanePresenter.InputType.NEW);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
 
+            if (presenter.isAccepted()) {
+                projectDao.save(presenter.getProject());
+                projectList.getProjects().add(presenter.getProject());
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
     @FXML
     void editSelectedProject() {
         Project selectedProject = tableView.getSelectionModel().getSelectedItem();
-
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectEditPane.fxml"));
+            ProjectEditPanePresenter presenter = loader.getController();
+            presenter.setInputType(ProjectEditPanePresenter.InputType.EDIT);
+            presenter.setProject(selectedProject);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
+            if (presenter.isAccepted()) {
+                projectDao.save(selectedProject);
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
     @FXML

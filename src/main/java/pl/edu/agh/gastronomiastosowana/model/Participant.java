@@ -2,10 +2,12 @@ package pl.edu.agh.gastronomiastosowana.model;
 
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 public class Participant {
@@ -24,17 +26,14 @@ public class Participant {
 
     @Transient private ObjectProperty<LocalDate> registrationDate;
 
-    @ManyToMany
     @Transient private SetProperty<ProjectGroup> worksFor;
 
-    @OneToMany(mappedBy = "chief")
     @Transient private SetProperty<ProjectGroup> managedProjectGroups;
 
 
 
     public Participant(String name, String surname, int age, String email){
         this();
-
         setName(name);
         setSurname(surname);
         setAge(age);
@@ -116,11 +115,11 @@ public class Participant {
 
     @Access(AccessType.PROPERTY)
     @ManyToMany
-    public ObservableSet<ProjectGroup> getWorksFor() {
+    public Set<ProjectGroup> getWorksFor() {
         return worksFor.get();
     }
-    public void setWorksFor(ObservableSet<ProjectGroup> projectGroups){
-        this.worksFor.set(projectGroups);
+    public void setWorksFor(Set<ProjectGroup> projectGroups){
+        this.worksFor.set(FXCollections.observableSet(projectGroups));
     }
     public SetProperty<ProjectGroup> worksForProperty(){
         return worksFor;
@@ -140,3 +139,4 @@ public class Participant {
 
 
 }
+
