@@ -3,7 +3,6 @@ package pl.edu.agh.gastronomiastosowana.model;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,6 +33,7 @@ public class Participant {
 
     public Participant(String name, String surname, int age, String email){
         this();
+
         setName(name);
         setSurname(surname);
         setAge(age);
@@ -127,16 +127,14 @@ public class Participant {
 
     @Access(AccessType.PROPERTY)
     @OneToMany(mappedBy = "chief")
-    public ObservableSet<ProjectGroup> getManagedProjectGroups() {
+    public Set<ProjectGroup> getManagedProjectGroups() {
         return managedProjectGroups.get();
     }
-    public void setManagedProjectGroups(ObservableSet<ProjectGroup> projectGroups){
-        this.managedProjectGroups.set(projectGroups);
+    public void setManagedProjectGroups(Set<ProjectGroup> projectGroups){
+        this.managedProjectGroups.set(FXCollections.observableSet(projectGroups));
     }
     public SetProperty<ProjectGroup> managedProjectGroupsProperty(){
         return managedProjectGroups;
     }
-
-
 }
 
