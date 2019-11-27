@@ -47,7 +47,7 @@ public class Critic {
         return surname;
     }
 
-    public void setSurnameProperty(String surname) {
+    public void setSurname(String surname) {
         this.surname.set(surname);
     }
 
