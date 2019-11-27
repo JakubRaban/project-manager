@@ -5,14 +5,14 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.model.Project;
-import pl.edu.agh.gastronomiastosowana.model.lists.ProjectList;
+import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectList;
+import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class ProjectViewController {
         bindTableProperties();
         bindButtonProperties();
         bindProjectGroupProperties();
-        loadAll(null);
+        loadAll();
     }
 
     private void bindTableProperties() {
@@ -77,17 +77,17 @@ public class ProjectViewController {
     }
 
     @FXML
-    private void loadActive(ActionEvent event) {
+    private void loadActive() {
         projectList.setProjects(FXCollections.observableArrayList());
     }
 
     @FXML
-    private void loadAll(ActionEvent event) {
+    private void loadAll() {
         projectList.setProjects(FXCollections.observableList(projectDao.findAll()));
     }
 
     @FXML
-    private void loadArchival(ActionEvent event) {
+    private void loadArchival() {
         projectList.setProjects(FXCollections.observableArrayList());
     }
 
@@ -98,7 +98,7 @@ public class ProjectViewController {
             FXMLLoader loader = new FXMLLoader();
             Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectEditPane.fxml"));
             ProjectEditPanePresenter presenter = loader.getController();
-            presenter.setInputType(ProjectEditPanePresenter.InputType.NEW);
+            presenter.setItemInputType(ItemInputType.NEW_ITEM);
             presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
             editDialog.getDialogPane().setContent(parent);
             editDialog.showAndWait();
@@ -121,7 +121,7 @@ public class ProjectViewController {
             FXMLLoader loader = new FXMLLoader();
             Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectEditPane.fxml"));
             ProjectEditPanePresenter presenter = loader.getController();
-            presenter.setInputType(ProjectEditPanePresenter.InputType.EDIT);
+            presenter.setItemInputType(ItemInputType.EDIT_ITEM);
             presenter.setProject(selectedProject);
             presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
             editDialog.getDialogPane().setContent(parent);

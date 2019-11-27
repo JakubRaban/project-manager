@@ -10,26 +10,16 @@ import java.util.Set;
 
 @Entity
 public class Participant {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int participantID;
-
     @Transient private StringProperty name;
-
     @Transient private StringProperty surname;
-
     @Transient private IntegerProperty age;
-
     @Transient private StringProperty email;
-
     @Transient private ObjectProperty<LocalDate> registrationDate;
-
     @Transient private SetProperty<ProjectGroup> worksFor;
-
     @Transient private SetProperty<ProjectGroup> managedProjectGroups;
-
-
 
     public Participant(String name, String surname, int age, String email){
         this();
@@ -38,19 +28,22 @@ public class Participant {
         setSurname(surname);
         setAge(age);
         setEmail(email);
-        setRegistrationDate(LocalDate.now());
 
     }
 
     public Participant(){
-        worksFor = new SimpleSetProperty<ProjectGroup>();
-        managedProjectGroups = new SimpleSetProperty<ProjectGroup>();
+        worksFor = new SimpleSetProperty<ProjectGroup>(this, "worksFor");
+        managedProjectGroups = new SimpleSetProperty<ProjectGroup>(this, "managedProjectGroup");
 
         name = new SimpleStringProperty(this, "name");
         surname = new SimpleStringProperty(this, "surname");
         age = new SimpleIntegerProperty(this, "age");
         email = new SimpleStringProperty(this, "email");
         registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
+
+        setWorksFor(new HashSet<ProjectGroup>());
+        setManagedProjectGroups(new HashSet<ProjectGroup>());
+        setRegistrationDate(LocalDate.now());
     }
 
     @Access(AccessType.PROPERTY)

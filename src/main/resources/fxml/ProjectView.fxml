@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
 
-<HBox prefHeight="531.0" prefWidth="1145.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ProjectViewController">
+<HBox prefHeight="531.0" prefWidth="1145.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ProjectViewController">
    <children>
       <VBox prefHeight="200.0" prefWidth="146.0" spacing="50.0">
          <children>
@@ -38,8 +29,8 @@
             <VBox spacing="5.0">
                <children>
                   <Button fx:id="addNewButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addNewProject" prefHeight="26.0" prefWidth="138.0" text="Add new project" />
-                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit Project" />
-                  <Button fx:id="removeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeSelectedProject" prefHeight="28.0" prefWidth="120.0" text="Remove Project" />
+                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project" />
+                  <Button fx:id="removeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeSelectedProject" prefHeight="28.0" prefWidth="120.0" text="Remove project" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

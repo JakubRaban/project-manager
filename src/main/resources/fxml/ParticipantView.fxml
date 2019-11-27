@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<HBox prefHeight="398.0" prefWidth="796.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ParticipantViewController">
+   <children>
+      <TableView fx:id="tableView" maxWidth="1.7976931348623157E308" prefHeight="368.0" prefWidth="593.0">
+        <columns>
+          <TableColumn prefWidth="120.0" text="Name">
+              <cellValueFactory>
+                  <PropertyValueFactory property="name" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="120.0" text="Surname">
+              <cellValueFactory>
+                  <PropertyValueFactory property="surname" />
+              </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="91.0" text="Age">
+            <cellValueFactory>
+              <PropertyValueFactory property="age" />
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="125.0" text="Email">
+            <cellValueFactory>
+              <PropertyValueFactory property="email" />
+            </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="126.0" text="Registration date">
+            <cellValueFactory>
+              <PropertyValueFactory property="registrationDate" />
+            </cellValueFactory>
+          </TableColumn>
+        </columns>
+      </TableView>
+      <VBox alignment="TOP_CENTER" prefHeight="368.0" prefWidth="165.0" spacing="5.0">
+         <children>
+            <Button fx:id="addNewButton" mnemonicParsing="false" onAction="#addNewParticipant" prefWidth="150.0" text="Add new participant" />
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editSelectedParticipant" prefWidth="150.0" text="Edit project" />
+            <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeSelectedParticipant" prefWidth="150.0" text="Remove project" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</HBox>

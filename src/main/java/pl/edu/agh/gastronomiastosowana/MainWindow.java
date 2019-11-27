@@ -10,8 +10,8 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResourceAsStream("/fxml/ProjectView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainPane.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("GastroFaza");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
