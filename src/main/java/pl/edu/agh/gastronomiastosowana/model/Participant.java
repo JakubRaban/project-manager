@@ -37,8 +37,8 @@ public class Participant {
     }
 
     public Participant(){
-        worksFor = new SimpleSetProperty<ProjectGroup>();
-        managedProjectGroups = new SimpleSetProperty<ProjectGroup>();
+        worksFor = new SimpleSetProperty<ProjectGroup>(this, "worksFor");
+        managedProjectGroups = new SimpleSetProperty<ProjectGroup>(this, "managedProjectGroup");
 
         name = new SimpleStringProperty(this, "name");
         surname = new SimpleStringProperty(this, "surname");
