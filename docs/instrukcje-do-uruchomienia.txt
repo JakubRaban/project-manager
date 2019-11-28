@@ -1,0 +1,5 @@
+1.W intellij wybrać open
+2.Wybrać build.grandle z folderu projektu
+3.Wybrać open as Project
+4.W okienku zaznaczyć "Use grandle 'wrapper' task configuration"
+5.Uruchomić funkcję main z klasy ApplicationRunner
