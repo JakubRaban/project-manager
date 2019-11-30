@@ -39,8 +39,8 @@
       <VBox alignment="TOP_CENTER" prefHeight="368.0" prefWidth="165.0" spacing="5.0">
          <children>
             <Button fx:id="addNewButton" mnemonicParsing="false" onAction="#addNewParticipant" prefWidth="150.0" text="Add new participant" />
-            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editSelectedParticipant" prefWidth="150.0" text="Edit project" />
-            <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeSelectedParticipant" prefWidth="150.0" text="Remove project" />
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editSelectedParticipant" prefWidth="150.0" text="Edit participant" />
+            <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeSelectedParticipant" prefWidth="150.0" text="Remove participant" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
