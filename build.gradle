@@ -6,7 +6,7 @@ plugins {
 
 javafx {
     version = "12"
-    modules = [ 'javafx.controls', 'javafx.graphics' ]
+    modules = [ 'javafx.controls', 'javafx.graphics', "javafx.fxml" ]
 }
 
 mainClassName = "gastromanager/pl.edu.agh.gastronomiastosowana.Main"
