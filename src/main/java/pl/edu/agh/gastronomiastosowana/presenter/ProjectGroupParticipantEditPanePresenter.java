@@ -16,8 +16,6 @@ import pl.edu.agh.gastronomiastosowana.model.exceptions.ChiefRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
-import java.time.LocalDate;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProjectGroupParticipantEditPanePresenter {
@@ -38,12 +36,7 @@ public class ProjectGroupParticipantEditPanePresenter {
     private ProjectGroup projectGroup;
 
     @FXML private Label dialogTypeLabel;
-    @FXML private TextField projectNameInput;
-    @FXML private DatePicker startDateInput;
-    @FXML private DatePicker endDateInput;
-    @FXML private TextField projectGroupInput;
-    @FXML private Label projectGroupLabel;
-    @FXML private Button projectGroupCancelButton;
+    @FXML private Label currentChiefLabel;
     @FXML private Label errorLabel;
     @FXML private Button addButton;
     @FXML private Button removeButton;
@@ -52,9 +45,9 @@ public class ProjectGroupParticipantEditPanePresenter {
     private void bindTableProperties() {
         tableCurrentUsersView.itemsProperty().bind(currentUsersList.participantsProperty());
         tableNotAssignedUsersView.itemsProperty().bind(notAssignedUsersList.participantsProperty());
-
     }
     private void bindButtonProperties() {
+        // TODO: repair bindings
         BooleanBinding disableBindingActiveUsers = tableCurrentUsersView.getSelectionModel().selectedItemProperty().isNull();
         BooleanBinding disableBindingNonActiveUsers = tableNotAssignedUsersView.getSelectionModel().selectedItemProperty().isNull();
 
@@ -64,7 +57,6 @@ public class ProjectGroupParticipantEditPanePresenter {
     }
     @FXML
     private void initialize() {
-        System.out.println("1");
         window = null;
         accepted = false;
         setItemInputType(ItemInputType.NEW_ITEM);
@@ -78,18 +70,9 @@ public class ProjectGroupParticipantEditPanePresenter {
 
         bindButtonProperties();
     }
-    private void updateProjectGroup() {
 
-    }
     @FXML
     private void accept() {
-        Optional<String> error = validateInput();
-        if (error.isPresent()) {
-            errorLabel.setText(error.get());
-            return;
-        }
-
-        updateProjectGroup();
         accepted = true;
         window.hide();
     }
@@ -100,30 +83,6 @@ public class ProjectGroupParticipantEditPanePresenter {
         window.hide();
     }
 
-    private Optional<String> validateInput() {
-        String name = Optional.ofNullable(projectNameInput.getText()).orElse("").trim();
-        LocalDate startDate = startDateInput.getValue();
-        LocalDate endDate = endDateInput.getValue();
-
-        if (name.isEmpty())
-            return Optional.of("Project name cannot be empty");
-        if (startDate == null)
-            return Optional.of("Start date cannot be empty");
-        if (endDate != null && startDate.compareTo(endDate) > 0)
-            return Optional.of("Start date is greater than end date");
-        return Optional.empty();
-    }
-
-    /*private void updateProject() {
-        project.setName(projectNameInput.getText().trim());
-        project.setStartDate(startDateInput.getValue());
-        if (endDateInput.getValue() != null) {
-            project.setEndDate(endDateInput.getValue());
-        }
-        if ( ! projectGroupInput.getText().equals("")) {
-            project.setProjectGroup(projectGroupInput.getText().trim());
-        }
-    }*/
     @FXML
     private void loadCurrentParticipants() {
         System.out.println(projectGroup.getParticipants());
@@ -132,7 +91,6 @@ public class ProjectGroupParticipantEditPanePresenter {
                 stream().
                 filter(x -> x.getWorksFor().contains(this.projectGroup)).
                 collect(Collectors.toList())));
-        System.out.println(currentUsersList);
     }
     @FXML
     private void loadNotAssignedParticipants() {
@@ -142,21 +100,14 @@ public class ProjectGroupParticipantEditPanePresenter {
                 stream().
                 filter(x -> ! x.getWorksFor().contains(this.projectGroup)).
                 collect(Collectors.toList())));
-        System.out.println(notAssignedUsersList);
     }
     @FXML
-    void clearStartDateInput(ActionEvent event) {
-        startDateInput.setValue(null);
+    private void loadCurrentChief(){
+        Participant chief = projectGroup.getChief();
+        currentChiefLabel.setText("Current leader: " + chief.getName()
+                + " " + chief.getSurname());
     }
 
-    @FXML
-    void clearEndDateInput(ActionEvent event) {
-        endDateInput.setValue(null);
-    }
-
-    public ItemInputType getItemInputType() {
-        return itemInputType;
-    }
 
     public void setItemInputType(ItemInputType itemInputType) {
         this.itemInputType = itemInputType;
@@ -181,6 +132,8 @@ public class ProjectGroupParticipantEditPanePresenter {
         loadCurrentParticipants();
         loadNotAssignedParticipants();
 
+        loadCurrentChief();
+
         bindTableProperties();
         bindTableProperties();
     }
@@ -198,14 +151,15 @@ public class ProjectGroupParticipantEditPanePresenter {
         Participant removedParticipant = tableCurrentUsersView.getSelectionModel().getSelectedItem();
         try {
             projectGroup.removeParticipant(removedParticipant);
+            tableNotAssignedUsersView.getItems().add(removedParticipant);
+            tableCurrentUsersView.getItems().remove(removedParticipant);
+            errorLabel.setText(null);
         } catch (NonPresentParticipantRemovalException e) {
             e.printStackTrace();
         } catch (ChiefRemovalException e) {
-            e.printStackTrace();
+            errorLabel.setText("Cannot remove group chief from group");
         }
 
-        tableNotAssignedUsersView.getItems().add(removedParticipant);
-        tableCurrentUsersView.getItems().remove(removedParticipant);
 
         projectGroupDao.update(projectGroup);
     }
@@ -218,6 +172,7 @@ public class ProjectGroupParticipantEditPanePresenter {
         tableCurrentUsersView.getItems().add(addedParticipant);
 
         projectGroupDao.update(projectGroup);
+        errorLabel.setText(null);
     }
 
     public void setAsChief(ActionEvent actionEvent) throws ChiefNotSetException {
@@ -225,6 +180,7 @@ public class ProjectGroupParticipantEditPanePresenter {
         projectGroup.changeChief(newChief);
 
         projectGroupDao.update(projectGroup);
-
+        loadCurrentChief();
+        errorLabel.setText(null);
     }
 }

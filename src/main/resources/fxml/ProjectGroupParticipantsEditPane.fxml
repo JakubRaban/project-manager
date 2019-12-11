@@ -15,61 +15,73 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.TableView?>
-<VBox prefHeight="287.0" prefWidth="471.0" spacing="20.0" stylesheets="@/css/ProjectEditPane.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupParticipantEditPanePresenter">
+<VBox prefHeight="287.0" prefWidth="800.0" spacing="20.0" stylesheets="@/css/ProjectEditPane.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupParticipantEditPanePresenter">
    <children>
       <Label fx:id="dialogTypeLabel" maxWidth="1.7976931348623157E308" text="Menage group members">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-       <GridPane prefHeight="501.0" prefWidth="314.0">
-           <TableView fx:id="tableCurrentUsersView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="250.0" GridPane.columnIndex="0">
+       <GridPane prefHeight="501.0" prefWidth="750.0">
+           <TableView fx:id="tableCurrentUsersView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="375.0" GridPane.columnIndex="0">
                <columns>
-                   <TableColumn prefWidth="120.0" text="Name">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="name" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn prefWidth="125.0" text="Surname">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="surname" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn prefWidth="125.0" text="Email">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="email" />
-                       </cellValueFactory>
+                   <TableColumn text="Group Participants" prefWidth = "350.0">
+                           <columns>
+                                <TableColumn prefWidth="120.0" text="Name">
+                                  <cellValueFactory>
+                                     <PropertyValueFactory property="name" />
+                                  </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="125.0" text="Surname">
+                                  <cellValueFactory>
+                                      <PropertyValueFactory property="surname" />
+                                  </cellValueFactory>
+                                </TableColumn>
+                                <TableColumn prefWidth="125.0" text="Email">
+                                  <cellValueFactory>
+                                     <PropertyValueFactory property="email" />
+                                  </cellValueFactory>
+                                </TableColumn>
+                           </columns>
                    </TableColumn>
                </columns>
            </TableView>
-           <TableView fx:id="tableNotAssignedUsersView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="250.0" GridPane.columnIndex="1">
+           <TableView fx:id="tableNotAssignedUsersView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="375.0" GridPane.columnIndex="1">
                <columns>
-                   <TableColumn prefWidth="120.0" text="Name">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="name" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn prefWidth="125.0" text="Surname">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="surname" />
-                       </cellValueFactory>
-                   </TableColumn>
-                   <TableColumn prefWidth="125.0" text="Email">
-                       <cellValueFactory>
-                           <PropertyValueFactory property="email" />
-                       </cellValueFactory>
-                   </TableColumn>
+               <TableColumn text="Group Non-participants" prefWidth = "350.0">
+                    <columns>
+                        <TableColumn prefWidth="120.0" text="Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                         </TableColumn>
+                        <TableColumn prefWidth="125.0" text="Surname">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="surname" />
+                             </cellValueFactory>
+                        </TableColumn>
+                          <TableColumn prefWidth="125.0" text="Email">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="email" />
+                             </cellValueFactory>
+                          </TableColumn>
+                     </columns>
+               </TableColumn>
                </columns>
            </TableView>
+
        </GridPane>
+       <HBox alignment="TOP_CENTER" prefHeight="38.0" prefWidth="431.0" spacing="10.0">
+        <children>
+            <Label fx:id="currentChiefLabel" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+        </children>
+       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="431.0" spacing="10.0">
          <children>
-            <Label fx:id="errorLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" textFill="RED" HBox.hgrow="ALWAYS" />
             <Button defaultButton="true" mnemonicParsing="false" onAction="#accept" prefWidth="80.0" text="OK" />
-            <Button cancelButton="true" mnemonicParsing="false" onAction="#reject" prefWidth="80.0" text="Cancel" />
              <Button fx:id="addButton" mnemonicParsing="false" onAction="#addToGroup" prefWidth="80.0" text="Add" />
              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeFromGroup" prefWidth="80.0" text="Remove" />
-             <Button fx:id="setChiefButton" mnemonicParsing="false" onAction="#setAsChief" prefWidth="80.0" text="Set as chief" />
+             <Button fx:id="setChiefButton" mnemonicParsing="false" onAction="#setAsChief" prefWidth="120.0" text="Set as chief" />
          </children>
          <opaqueInsets>
             <Insets />
@@ -78,6 +90,11 @@
             <Insets />
          </VBox.margin>
       </HBox>
+       <HBox alignment="BOTTOM_CENTER" prefHeight="38.0" prefWidth="431.0" spacing="10.0">
+           <children>
+           <Label fx:id="errorLabel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" textFill="RED" HBox.hgrow="ALWAYS" />
+           </children>
+       </HBox>
    </children>
    <opaqueInsets>
       <Insets />
