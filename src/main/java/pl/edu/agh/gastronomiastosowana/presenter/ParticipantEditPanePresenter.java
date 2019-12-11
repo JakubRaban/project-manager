@@ -81,14 +81,13 @@ public class ParticipantEditPanePresenter {
         if (!email.matches(EMAIL_REGEX))
             return Optional.of("Email input invalid");
 
-
-        try{
-            Double.valueOf(ratingInput.getText());
+        if ( ! ratingInput.getText().isEmpty()) {
+            try {
+                Double.valueOf(ratingInput.getText());
+            } catch (Exception e) {
+                return Optional.of("Invalid rating value");
+            }
         }
-        catch(Exception e){
-            return Optional.of("Invalid rating value");
-        }
-
 
         return Optional.empty();
     }
@@ -99,12 +98,14 @@ public class ParticipantEditPanePresenter {
         participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
 
-        try {
-            Rating rating = new Rating(participant, Double.valueOf(ratingInput.getText()), commentInput.getText() );
-            participant.setRating(rating);
-            ratingDao.save(rating);
-        } catch (InvalidRatingValueException e) {
-            e.printStackTrace();
+        if ( ! ratingInput.getText().isEmpty()) {
+            try {
+                Rating rating = new Rating(participant, Double.valueOf(ratingInput.getText()), commentInput.getText());
+                participant.setRating(rating);
+                ratingDao.save(rating);
+            } catch (InvalidRatingValueException e) {
+                e.printStackTrace();
+            }
         }
 
     }

@@ -46,6 +46,7 @@ public class ProjectViewController {
         bindTableProperties();
         bindButtonProperties();
         bindProjectGroupProperties();
+
         loadAll();
     }
 
@@ -107,6 +108,7 @@ public class ProjectViewController {
             editDialog.showAndWait();
 
             if (presenter.isAccepted()) {
+                projectGroupDao.save(presenter.getProject().getProjectGroup());
                 projectDao.save(presenter.getProject());
                 projectList.getProjects().add(presenter.getProject());
             }

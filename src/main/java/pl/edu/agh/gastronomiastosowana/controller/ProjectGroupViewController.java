@@ -28,7 +28,6 @@ import java.time.LocalDate;
 
 public class ProjectGroupViewController {
 
-    public Label chiefLabel;
     private ProjectGroupList projectGroupList;
     private ProjectDao projectDao;
     private ProjectGroupDao projectGroupDao;
@@ -36,6 +35,8 @@ public class ProjectGroupViewController {
 
     @FXML private TableView<ProjectGroup> tableView;
 
+    @FXML private Label chiefLabel;
+    @FXML private Label creationDateLabel;
     @FXML private Label activeLabel;
     @FXML private Label projectNameLabel;
     @FXML private Button editButton;
@@ -66,21 +67,28 @@ public class ProjectGroupViewController {
         // TODO: fix warnings
         ObjectBinding<String> projectNameBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "project", "name");
         projectNameLabel.textProperty().bind(projectNameBinding);
-/*
-        ObjectBinding<Boolean> activeBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "projectGroup", "active");
+
+        ObjectBinding<Boolean> activeBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "active");
         StringBinding activeStringBinding = Bindings
                 .when(activeBinding.isNotNull())
                 .then(activeBinding.asString())
                 .otherwise("");
         activeLabel.textProperty().bind(activeStringBinding);
-*/
-        /*
-        ObjectBinding<LocalDate> creationDateBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "projectGroup", "creationDate");
+
+
+        ObjectBinding<LocalDate> creationDateBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "creationDate");
         StringBinding creationDateStringBinding = Bindings
                 .when(creationDateBinding.isNotNull())
                 .then(creationDateBinding.asString())
                 .otherwise("");
-        creationDateLabel.textProperty().bind(creationDateStringBinding);*/
+        creationDateLabel.textProperty().bind(creationDateStringBinding);
+
+        ObjectBinding<LocalDate> chiefBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "chief", "name");
+        StringBinding chiefStringBinding = Bindings
+                .when(chiefBinding.isNotNull())
+                .then(chiefBinding.asString())
+                .otherwise("");
+        chiefLabel.textProperty().bind(chiefStringBinding);
     }
 
     @FXML
