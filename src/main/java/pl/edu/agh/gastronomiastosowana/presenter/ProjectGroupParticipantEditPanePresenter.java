@@ -104,8 +104,11 @@ public class ProjectGroupParticipantEditPanePresenter {
     @FXML
     private void loadCurrentChief(){
         Participant chief = projectGroup.getChief();
-        currentChiefLabel.setText("Current leader: " + chief.getName()
+        if(chief != null)
+            currentChiefLabel.setText("Current chief: " + chief.getName()
                 + " " + chief.getSurname());
+        else
+            currentChiefLabel.setText("Current chief: none");
     }
 
 
