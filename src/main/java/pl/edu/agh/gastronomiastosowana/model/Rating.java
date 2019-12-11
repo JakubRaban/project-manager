@@ -19,28 +19,15 @@ public class Rating {
 
     @Transient private StringProperty comment = new SimpleStringProperty();
 
-    @OneToOne
+    @ManyToOne
     private Participant participant;
 
     @ManyToOne
     private Critic critic;
 
-    public Rating(Participant participant, Critic critic, double ratingValue, String comment) throws InvalidRatingValueException {
-        submitDate.setValue(LocalDate.now());
+    @ManyToOne
+    private ProjectGroup assessedGroup;
 
-        if ((ratingValue < 0.0) || ( ratingValue > 5.0)){
-            throw new InvalidRatingValueException();
-        }
-        this.ratingValue.setValue(ratingValue);
-
-        this.comment.setValue(comment);
-
-        this.participant = participant;
-        this.participant.setRating(this);
-
-        this.critic = critic;
-
-    }
     public Rating(Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
         submitDate.setValue(LocalDate.now());
 
@@ -52,11 +39,14 @@ public class Rating {
         this.comment.setValue(comment);
 
         this.participant = participant;
-        this.participant.setRating(this);
-
-
     }
-    public Rating(){
+
+    public Rating(Participant participant, Critic critic, double ratingValue, String comment) throws InvalidRatingValueException {
+        this(participant, ratingValue, comment);
+        this.critic = critic;
+    }
+
+    public Rating() {
 
     }
 
