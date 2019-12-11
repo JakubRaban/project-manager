@@ -26,6 +26,8 @@ public class ProjectGroup {
     private Participant chief;
     @ManyToMany(mappedBy = "worksFor")
     private Set<Participant> participants = new HashSet<>();
+    @OneToMany(mappedBy = "assessedGroup")
+    private Set<Rating> ratings;
 
     public ProjectGroup(String groupName) {
         this();

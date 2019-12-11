@@ -98,14 +98,12 @@ public class ParticipantEditPanePresenter {
         participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
 
-        if ( ! ratingInput.getText().isEmpty()) {
-            try {
-                Rating rating = new Rating(participant, Double.valueOf(ratingInput.getText()), commentInput.getText());
-                participant.setRating(rating);
-                ratingDao.save(rating);
-            } catch (InvalidRatingValueException e) {
-                e.printStackTrace();
-            }
+        try {
+            Rating rating = new Rating(participant, Double.parseDouble(ratingInput.getText()), commentInput.getText() );
+            participant.addRating(rating);
+            ratingDao.save(rating);
+        } catch (InvalidRatingValueException e) {
+            e.printStackTrace();
         }
 
     }
@@ -132,7 +130,7 @@ public class ParticipantEditPanePresenter {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
-        if(participant == null){
+        if(participant == null) {
             nameInput.clear();
             surnameInput.clear();
             ageInput.clear();
@@ -140,16 +138,11 @@ public class ParticipantEditPanePresenter {
             ratingInput.clear();
             commentInput.clear();
         }
-        else{
+        else {
             nameInput.setText(participant.getName());
             surnameInput.setText(participant.getSurname());
             ageInput.setText(Integer.toString(participant.getAge()));
             emailInput.setText(participant.getEmail());
-            if ( participant.getRating() != null) {
-                ratingInput.setText(String.valueOf(participant.getRating().getRatingValue()));
-                commentInput.setText(participant.getRating().getComment());
-            }
-
         }
     }
 

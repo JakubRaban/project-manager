@@ -132,12 +132,15 @@ public class Participant {
     }
 
 
-    private ObjectProperty<Rating> rating = new SimpleObjectProperty<Rating>();
+    private SetProperty<Rating> rating = new SimpleSetProperty<>();
 
     @Access(AccessType.PROPERTY)
-    @OneToOne(mappedBy = "participant")
-    public Rating getRating() { return rating.getValue(); }
-    public void setRating(Rating rating) { this.rating.setValue(rating); };
-    public ObjectProperty<Rating> ratingProperty() { return rating; }
+    @OneToMany(mappedBy = "participant")
+    public Set<Rating> getRating() { return rating.getValue(); }
+    public void setRating(Set<Rating> ratings) { this.rating.setValue(FXCollections.observableSet(ratings)); }
+    public SetProperty<Rating> ratingProperty() { return rating; }
+    public void addRating(Rating rating) {
+        this.rating.add(rating);
+    }
 }
 
