@@ -130,5 +130,14 @@ public class Participant {
     public SetProperty<ProjectGroup> managedProjectGroupsProperty(){
         return managedProjectGroups;
     }
+
+
+    private ObjectProperty<Rating> rating = new SimpleObjectProperty<Rating>();
+
+    @Access(AccessType.PROPERTY)
+    @OneToOne(mappedBy = "participant")
+    public Rating getRating() { return rating.getValue(); }
+    public void setRating(Rating rating) { this.rating.setValue(rating); };
+    public ObjectProperty<Rating> ratingProperty() { return rating; }
 }
 
