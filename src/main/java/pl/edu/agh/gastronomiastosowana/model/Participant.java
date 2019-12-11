@@ -137,7 +137,8 @@ public class Participant {
     @Access(AccessType.PROPERTY)
     @OneToMany(mappedBy = "participant")
     public Set<Rating> getRating() { return rating.getValue(); }
-    public void setRating(Set<Rating> ratings) { this.rating.setValue(FXCollections.observableSet(ratings)); }
+    public void setRating(Set<Rating> ratings) {
+        this.rating.setValue(FXCollections.observableSet(ratings)); }
     public SetProperty<Rating> ratingProperty() { return rating; }
     public void addRating(Rating rating) {
         this.rating.add(rating);

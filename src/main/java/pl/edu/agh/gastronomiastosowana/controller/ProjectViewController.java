@@ -108,7 +108,9 @@ public class ProjectViewController {
             editDialog.showAndWait();
 
             if (presenter.isAccepted()) {
-                projectGroupDao.save(presenter.getProject().getProjectGroup());
+                if (presenter.getProject().getProjectGroup() != null) {
+                    projectGroupDao.save(presenter.getProject().getProjectGroup());
+                }
                 projectDao.save(presenter.getProject());
                 projectList.getProjects().add(presenter.getProject());
             }

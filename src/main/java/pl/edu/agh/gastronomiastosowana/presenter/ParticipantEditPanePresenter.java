@@ -98,12 +98,14 @@ public class ParticipantEditPanePresenter {
         participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
 
-        try {
-            Rating rating = new Rating(participant, Double.parseDouble(ratingInput.getText()), commentInput.getText() );
-            participant.addRating(rating);
-            ratingDao.save(rating);
-        } catch (InvalidRatingValueException e) {
-            e.printStackTrace();
+        if (!ratingInput.getText().isEmpty()) {
+            try {
+                Rating rating = new Rating(participant, Double.parseDouble(ratingInput.getText()), commentInput.getText());
+                participant.addRating(rating);
+                ratingDao.save(rating);
+            } catch (InvalidRatingValueException e) {
+                e.printStackTrace();
+            }
         }
 
     }
