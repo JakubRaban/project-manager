@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox prefHeight="531.0" prefWidth="1145.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ProjectGroupViewController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="146.0" spacing="50.0">
+         <children>
+            <VBox spacing="5.0">
+               <children>
+                  <RadioButton fx:id="toggleActive" mnemonicParsing="false" onAction="#loadActive" text="Active">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="projectTypeGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All" toggleGroup="$projectTypeGroup" />
+                  <RadioButton fx:id="toggleArchival" mnemonicParsing="false" onAction="#loadArchival" text="Archival" toggleGroup="$projectTypeGroup" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox spacing="5.0">
+               <children>
+                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project" />
+               </children>
+               <children>
+                  <Button fx:id="editParticipantsButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editParticipants" prefHeight="28.0" prefWidth="116.0" text="Edit Participants" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+      <TableView fx:id="tableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="510.0">
+         <columns>
+            <TableColumn prefWidth="120.0" text="Group Name">
+               <cellValueFactory>
+                  <PropertyValueFactory property="groupName" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="125.0" text="Active">
+               <cellValueFactory>
+                  <PropertyValueFactory property="active" />
+               </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="125.0" text="Creation Date">
+               <cellValueFactory>
+                  <PropertyValueFactory property="creationDate" />
+               </cellValueFactory>
+            </TableColumn>
+         </columns>
+      </TableView>
+      <GridPane prefHeight="501.0" prefWidth="314.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="130.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="172.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label maxWidth="1.7976931348623157E308" text="Project name:" />
+            <Label fx:id="projectNameLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+            <Label maxWidth="1.7976931348623157E308" text="Active:" GridPane.rowIndex="1" />
+            <Label fx:id="activeLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label maxWidth="1.7976931348623157E308" text="Creation date:" GridPane.rowIndex="2" />
+            <Label fx:id="creationDateLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label maxWidth="1.7976931348623157E308" text="Chief:" GridPane.rowIndex="3" />
+            <Label fx:id="chiefLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label maxWidth="1.7976931348623157E308" text="Participant count:" GridPane.rowIndex="4" />
+            <Label fx:id="participantCountLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label maxWidth="1.7976931348623157E308" text="Average score:" GridPane.rowIndex="5" />
+            <Label fx:id="averageScoreLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</HBox>

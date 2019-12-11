@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="287.0" prefWidth="471.0" spacing="20.0" stylesheets="@/css/ProjectEditPane.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter">
+<VBox prefHeight="287.0" prefWidth="471.0" spacing="20.0" stylesheets="@/css/ProjectEditPane.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupEditPanePresenter">
    <children>
       <Label fx:id="dialogTypeLabel" maxWidth="1.7976931348623157E308" text="Create new project">
          <font>
@@ -38,7 +38,7 @@
             <Label maxWidth="1.7976931348623157E308" text="Project group:" GridPane.rowIndex="3" />
             <TextField fx:id="projectGroupInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
              <Label fx:id="projectGroupLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false" />
-             <Button fx:id="projectGroupCancelButton" maxWidth="1.7976931348623157E308" text="Cancel project group assignment" onAction="#cancelGroupAssignment" GridPane.columnIndex="1" GridPane.rowIndex="4" visible="false"/>
+             <Button fx:id="projectGroupCancelButton" maxWidth="1.7976931348623157E308" text="Cancel project group assignment"  GridPane.columnIndex="1" GridPane.rowIndex="4" visible="false"/>
 
             <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
