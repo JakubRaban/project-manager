@@ -2,28 +2,34 @@ package pl.edu.agh.gastronomiastosowana.presenter;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Window;
+import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
+import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
+import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.GroupAlreadyAssignedException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class ProjectEditPanePresenter {
+public class ProjectGroupEditPanePresenter {
+    private ParticipantDao participantDao;
+    private ParticipantList participantList;
+
+    @FXML
+    private TableView<Participant> tableCurrentUsersView;
     private Window window;
     private boolean accepted;
     private ItemInputType itemInputType;
-    private Project project;
+    private ProjectGroup projectGroup;
 
     @FXML private Label dialogTypeLabel;
     @FXML private TextField projectNameInput;
-    @FXML private DatePicker startDateInput;
+    @FXML
+    private DatePicker startDateInput;
     @FXML private DatePicker endDateInput;
     @FXML private TextField projectGroupInput;
     @FXML private Label projectGroupLabel;
@@ -32,12 +38,22 @@ public class ProjectEditPanePresenter {
 
     @FXML
     private void initialize() {
+        participantDao = new ParticipantDao();
+        participantList = new ParticipantList();
+
         window = null;
         accepted = false;
         setItemInputType(ItemInputType.NEW_ITEM);
-        setProject(new Project());
-    }
+        setProjectGroup(new ProjectGroup());
 
+        bindTableProperties();
+    }
+    private void bindTableProperties() {
+        tableCurrentUsersView.itemsProperty().bind(participantList.participantsProperty());
+    }
+    private void updateProjectGroup() {
+
+    }
     @FXML
     private void accept() {
         Optional<String> error = validateInput();
@@ -46,7 +62,7 @@ public class ProjectEditPanePresenter {
             return;
         }
 
-        updateProject();
+        updateProjectGroup();
         accepted = true;
         window.hide();
     }
@@ -71,7 +87,7 @@ public class ProjectEditPanePresenter {
         return Optional.empty();
     }
 
-    private void updateProject() {
+    /*private void updateProject() {
         project.setName(projectNameInput.getText().trim());
         project.setStartDate(startDateInput.getValue());
         if (endDateInput.getValue() != null) {
@@ -80,7 +96,7 @@ public class ProjectEditPanePresenter {
         if ( ! projectGroupInput.getText().equals("")) {
             project.setProjectGroup(projectGroupInput.getText().trim());
         }
-    }
+    }*/
 
     @FXML
     void clearStartDateInput(ActionEvent event) {
@@ -108,44 +124,12 @@ public class ProjectEditPanePresenter {
         }
     }
 
-    public Project getProject() {
-        return project;
+    public ProjectGroup getProjectGroup() {
+        return projectGroup;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
-        if (project == null) {
-            projectNameInput.clear();
-            startDateInput.setValue(null);
-            endDateInput.setValue(null);
-            projectGroupInput.clear();
-        }
-        else {
-            projectNameInput.setText(project.getName());
-            startDateInput.setValue(project.getStartDate());
-            endDateInput.setValue(project.getEndDate());
-            if (project.getProjectGroup() != null) {
-                projectGroupInput.setVisible(false);
-
-                projectGroupLabel.setVisible(true);
-                projectGroupLabel.setText(project.getProjectGroup().getGroupName());
-
-                projectGroupCancelButton.setVisible(true);
-
-                //projectGroupInput.setText(project.getProjectGroup().getGroupName());
-            }
-            else {
-                projectGroupInput.setVisible(true);
-                projectGroupLabel.setVisible(false);
-                projectGroupCancelButton.setVisible(false);
-
-                projectGroupInput.setText("");
-            }
-            //if project has project group assigned - show project group label
-            //else show text box with project group input
-
-
-        }
+    public void setProjectGroup(ProjectGroup projectGroup) {
+        this.projectGroup = projectGroup;
     }
 
     public void setWindow(Window window) {
@@ -157,11 +141,4 @@ public class ProjectEditPanePresenter {
         return accepted;
     }
 
-    public void cancelGroupAssignment(){
-        project.cancelProjectGroup();
-
-        projectGroupInput.setVisible(true);
-        projectGroupLabel.setVisible(false);
-        projectGroupCancelButton.setVisible(false);
-    }
 }
