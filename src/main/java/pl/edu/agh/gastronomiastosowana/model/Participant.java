@@ -21,6 +21,7 @@ public class Participant {
     @Transient private ObjectProperty<LocalDate> registrationDate;
     @Transient private SetProperty<ProjectGroup> worksFor;
     @Transient private SetProperty<ProjectGroup> managedProjectGroups;
+    @Transient private SetProperty<Rating> ratings;
 
     public Participant(String name, String surname, int age, String email){
         this();
@@ -41,6 +42,7 @@ public class Participant {
         age = new SimpleIntegerProperty(this, "age");
         email = new SimpleStringProperty(this, "email");
         registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
+        ratings = new SimpleSetProperty<>(this, "ratings");
 
         setWorksFor(new HashSet<ProjectGroup>());
         setManagedProjectGroups(new HashSet<ProjectGroup>());
@@ -132,16 +134,17 @@ public class Participant {
     }
 
 
-    private SetProperty<Rating> rating = new SimpleSetProperty<>();
+
 
     @Access(AccessType.PROPERTY)
     @OneToMany(mappedBy = "participant")
-    public Set<Rating> getRating() { return rating.getValue(); }
+    public Set<Rating> getRating() { return ratings.getValue(); }
     public void setRating(Set<Rating> ratings) {
-        this.rating.setValue(FXCollections.observableSet(ratings)); }
-    public SetProperty<Rating> ratingProperty() { return rating; }
+        if (ratings == null) this.ratings.setValue(FXCollections.emptyObservableSet());
+        else this.ratings.setValue(FXCollections.observableSet(ratings)); }
+    public SetProperty<Rating> ratingProperty() { return ratings; }
     public void addRating(Rating rating) {
-        this.rating.add(rating);
+        this.ratings.add(rating);
     }
 }
 
