@@ -28,15 +28,11 @@
             <Label maxWidth="1.7976931348623157E308" text="Surname:" GridPane.rowIndex="1" />
             <Label maxWidth="1.7976931348623157E308" text="Age:" GridPane.rowIndex="2" />
             <Label maxWidth="1.7976931348623157E308" text="Email:" GridPane.rowIndex="3" />
-             <Label maxWidth="1.7976931348623157E308" text="Rating:" GridPane.rowIndex="4" />
-             <Label maxWidth="1.7976931348623157E308" text="Comment:" GridPane.rowIndex="5" />
 
             <TextField fx:id="nameInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
             <TextField fx:id="surnameInput" prefWidth="231.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="ageInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="emailInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-             <TextField fx:id="ratingInput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-             <TextField fx:id="commentInput" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
       <HBox alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="279.0" spacing="10.0">

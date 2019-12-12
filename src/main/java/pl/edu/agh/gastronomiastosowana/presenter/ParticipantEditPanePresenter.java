@@ -26,8 +26,6 @@ public class ParticipantEditPanePresenter {
     @FXML private TextField surnameInput;
     @FXML private TextField ageInput;
     @FXML private TextField emailInput;
-    @FXML private TextField ratingInput;
-    @FXML private TextField commentInput;
 
     @FXML private Label errorLabel;
 
@@ -81,14 +79,6 @@ public class ParticipantEditPanePresenter {
         if (!email.matches(EMAIL_REGEX))
             return Optional.of("Email input invalid");
 
-        if ( ! ratingInput.getText().isEmpty()) {
-            try {
-                Double.valueOf(ratingInput.getText());
-            } catch (Exception e) {
-                return Optional.of("Invalid rating value");
-            }
-        }
-
         return Optional.empty();
     }
 
@@ -97,16 +87,6 @@ public class ParticipantEditPanePresenter {
         participant.setSurname(surnameInput.getText().trim());
         participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
-
-        if (!ratingInput.getText().isEmpty()) {
-            try {
-                Rating rating = new Rating(participant, Double.parseDouble(ratingInput.getText()), commentInput.getText());
-                participant.addRating(rating);
-                ratingDao.save(rating);
-            } catch (InvalidRatingValueException e) {
-                e.printStackTrace();
-            }
-        }
 
     }
 
@@ -137,8 +117,6 @@ public class ParticipantEditPanePresenter {
             surnameInput.clear();
             ageInput.clear();
             emailInput.clear();
-            ratingInput.clear();
-            commentInput.clear();
         }
         else {
             nameInput.setText(participant.getName());
