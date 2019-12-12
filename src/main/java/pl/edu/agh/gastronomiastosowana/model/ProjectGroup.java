@@ -26,14 +26,13 @@ public class ProjectGroup {
     private Participant chief;
     @ManyToMany(mappedBy = "worksFor")
     private Set<Participant> participants = new HashSet<>();
-    @OneToMany(mappedBy = "projectGroup")
-    private Set<Rating> ratings = new HashSet<>();
+    @OneToMany(mappedBy = "assessedGroup")
+    private Set<Rating> ratings;
 
-    public ProjectGroup(String groupName, Participant creator) throws ChiefIsSetException {
+    public ProjectGroup(String groupName) {
         this();
         //creator initially becomes chief, he can then change chief to another person, but losses ability to menage group
         setGroupName(groupName);
-        setChief(creator);
         setCreationDate(LocalDate.now());
     }
 
@@ -97,7 +96,7 @@ public class ProjectGroup {
     }
 
     public void setProject(Project project) {
-        this.project.set(project);
+        this.project.setValue(project);
     }
 
     public Participant getChief() {
@@ -114,13 +113,15 @@ public class ProjectGroup {
     }
 
     public void changeChief(Participant new_chief) throws ChiefNotSetException {
-        //Previous chief no longer manages the group
-        this.chief.getManagedProjectGroups().remove(this);
-        //New chief manages this project now
-        new_chief.getManagedProjectGroups().add(this);
+
+        if ( this.chief != null) {
+            //Previous chief no longer manages the group
+            this.chief.getManagedProjectGroups().remove(this);
+        }
         //set new_chief as chief to this working group
         this.chief = new_chief;
-
+        //New chief manages this project now
+        new_chief.getManagedProjectGroups().add(this);
         addParticipant(chief);
     }
 
@@ -140,7 +141,12 @@ public class ProjectGroup {
         participant.getWorksFor().remove(this);
     }
 
-    public Set<Rating> getRatings() {
-        return ratings;
+
+    public Set<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
     }
 }

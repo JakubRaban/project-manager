@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
+import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 public class ProjectViewController {
     private ProjectList projectList;
     private ProjectDao projectDao;
+    private ProjectGroupDao projectGroupDao;
 
     @FXML private TableView<Project> tableView;
 
@@ -39,10 +41,12 @@ public class ProjectViewController {
     private void initialize() {
         projectList = new ProjectList();
         projectDao = new ProjectDao();
+        projectGroupDao = new ProjectGroupDao();
 
         bindTableProperties();
         bindButtonProperties();
         bindProjectGroupProperties();
+
         loadAll();
     }
 
@@ -104,6 +108,9 @@ public class ProjectViewController {
             editDialog.showAndWait();
 
             if (presenter.isAccepted()) {
+                if (presenter.getProject().getProjectGroup() != null) {
+                    projectGroupDao.save(presenter.getProject().getProjectGroup());
+                }
                 projectDao.save(presenter.getProject());
                 projectList.getProjects().add(presenter.getProject());
             }
@@ -127,6 +134,7 @@ public class ProjectViewController {
             editDialog.getDialogPane().setContent(parent);
             editDialog.showAndWait();
             if (presenter.isAccepted()) {
+                projectGroupDao.save(selectedProject.getProjectGroup());
                 projectDao.save(selectedProject);
             }
         }
