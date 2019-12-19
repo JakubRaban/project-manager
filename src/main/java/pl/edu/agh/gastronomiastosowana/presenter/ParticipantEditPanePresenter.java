@@ -4,13 +4,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
+import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
+import pl.edu.agh.gastronomiastosowana.model.Rating;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.InvalidRatingValueException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 public class ParticipantEditPanePresenter {
+    private RatingDao ratingDao;
+
     private Window window;
     private boolean accepted;
     private ItemInputType itemInputType;
@@ -21,6 +26,7 @@ public class ParticipantEditPanePresenter {
     @FXML private TextField surnameInput;
     @FXML private TextField ageInput;
     @FXML private TextField emailInput;
+
     @FXML private Label errorLabel;
 
     @FXML
@@ -29,6 +35,8 @@ public class ParticipantEditPanePresenter {
         accepted = false;
         setItemInputType(ItemInputType.NEW_ITEM);
         setParticipant(new Participant());
+
+        ratingDao = new RatingDao();
     }
 
     @FXML
@@ -57,6 +65,9 @@ public class ParticipantEditPanePresenter {
         String age = Optional.ofNullable(ageInput.getText()).orElse("").trim();
         String email = Optional.ofNullable(emailInput.getText()).orElse("").trim();
 
+
+
+
         if (name.isEmpty())
             return Optional.of("Name cannot be empty");
         if (surname.isEmpty())
@@ -67,6 +78,7 @@ public class ParticipantEditPanePresenter {
             return Optional.of("Email cannot be empty");
         if (!email.matches(EMAIL_REGEX))
             return Optional.of("Email input invalid");
+
         return Optional.empty();
     }
 
@@ -75,6 +87,7 @@ public class ParticipantEditPanePresenter {
         participant.setSurname(surnameInput.getText().trim());
         participant.setAge(Integer.parseInt(ageInput.getText()));
         participant.setEmail(emailInput.getText());
+
     }
 
     public ItemInputType getItemInputType() {
@@ -99,13 +112,13 @@ public class ParticipantEditPanePresenter {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
-        if(participant == null){
+        if(participant == null) {
             nameInput.clear();
             surnameInput.clear();
             ageInput.clear();
             emailInput.clear();
         }
-        else{
+        else {
             nameInput.setText(participant.getName());
             surnameInput.setText(participant.getSurname());
             ageInput.setText(Integer.toString(participant.getAge()));

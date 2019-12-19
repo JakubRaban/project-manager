@@ -36,7 +36,10 @@
             <Label maxWidth="1.7976931348623157E308" text="End date:" GridPane.rowIndex="2" />
             <TextField fx:id="projectNameInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
             <Label maxWidth="1.7976931348623157E308" text="Project group:" GridPane.rowIndex="3" />
-            <Label fx:id="projectGroupInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="projectGroupInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+             <Label fx:id="projectGroupLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false" />
+             <Button fx:id="projectGroupCancelButton" maxWidth="1.7976931348623157E308" text="Cancel project group assignment" onAction="#cancelGroupAssignment" GridPane.columnIndex="1" GridPane.rowIndex="4" visible="false"/>
+
             <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <DatePicker fx:id="startDateInput" maxWidth="1.7976931348623157E308" prefHeight="28.0" prefWidth="270.0" />

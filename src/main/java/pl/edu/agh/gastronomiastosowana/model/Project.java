@@ -96,22 +96,35 @@ public class Project {
         if (getProjectGroup() != null)
             getProjectGroup().setProject(this);
     }
+    public void cancelProjectGroup(){
+        if (this.projectGroup != null){
+            this.projectGroup.getValue().setProject(null);
+            this.projectGroup.setValue(null);
+        }
 
+    }
     //prototype:
     //Maybe it won't be needed
-    public void setProjectGroup(String groupName, Participant creator) throws ChiefIsSetException {
-        getProjectGroup().setProject(null);
-        this.projectGroup.set(null);
+    public void setProjectGroup(String groupName) {
+        System.out.println(projectGroup);
+        if ( this.projectGroup.getValue() != null) {
+            getProjectGroup().setProject(null);
+            this.projectGroup.set(null);
+        }
 
-        projectGroup.set(new ProjectGroup(groupName, creator));
+        projectGroup.set(new ProjectGroup(groupName));
         getProjectGroup().setProject(this);
     }
 
-    public void createProjectGroup(String groupName, Participant creator) throws GroupAlreadyAssignedException, ChiefIsSetException {
+    public void createProjectGroup(String groupName) throws GroupAlreadyAssignedException, ChiefIsSetException {
         if (getProjectGroup() != null){
             throw new GroupAlreadyAssignedException();
         }
-        projectGroup.set(new ProjectGroup(groupName, creator));
+        projectGroup.set(new ProjectGroup(groupName));
         getProjectGroup().setProject(this);
+    }
+
+    public String toString(){
+        return this.name.getValue();
     }
 }
