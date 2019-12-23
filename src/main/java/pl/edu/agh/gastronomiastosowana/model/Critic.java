@@ -19,14 +19,17 @@ public class Critic {
     private StringProperty email;
 
     public Critic(String name, String surname, String email) {
+        this();
+        setName(name);
+        setSurname(surname);
+        setEmail(email);
+    }
+
+    public Critic() {
         this.name = new SimpleStringProperty(this, "name");
         this.surname = new SimpleStringProperty(this, "surname");
         this.email = new SimpleStringProperty(this, "email");
     }
-
-    public Critic() {}
-
-
 
     @Access(AccessType.PROPERTY)
     @Column(nullable = false)
