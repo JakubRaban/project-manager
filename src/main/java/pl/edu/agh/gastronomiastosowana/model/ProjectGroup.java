@@ -1,8 +1,6 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
 import javafx.beans.property.*;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderIsSetException;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderNotSetException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
 
@@ -27,7 +25,7 @@ public class ProjectGroup {
 
     @ManyToOne
     private Participant leader;
-    @ManyToMany(mappedBy = "worksFor")
+    @ManyToMany(mappedBy = "participatesIn")
     private Set<Participant> participants;
     @OneToMany(mappedBy = "assessedGroup")
     private Set<Rating> ratings;
@@ -99,16 +97,16 @@ public class ProjectGroup {
     }
     public void setLeader(Participant newLeader) {
         if (this.leader != null) {
-            this.leader.getManagedProjectGroups().remove(this);
+            this.leader.getLeaderIn().remove(this);
         }
         this.leader = newLeader;
-        newLeader.getManagedProjectGroups().add(this);
+        newLeader.getLeaderIn().add(this);
         addParticipant(leader);
     }
 
     public void addParticipant(Participant participant) {
         participants.add(participant);
-        participant.getWorksFor().add(this);
+        participant.getParticipatesIn().add(this);
     }
 
     public void removeParticipant(Participant participant) throws NonPresentParticipantRemovalException, LeaderRemovalException {
@@ -119,7 +117,7 @@ public class ProjectGroup {
             throw new LeaderRemovalException();
         }
         participants.remove(participant);
-        participant.getWorksFor().remove(this);
+        participant.getParticipatesIn().remove(this);
     }
 
     public Set<Participant> getParticipants() {

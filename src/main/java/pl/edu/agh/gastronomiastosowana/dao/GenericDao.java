@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Objects;
 
-public class GenericDao<T> {
+public abstract class GenericDao<T> {
 
     private Class<T> entityType;
 

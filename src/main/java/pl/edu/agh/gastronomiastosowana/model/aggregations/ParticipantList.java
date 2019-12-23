@@ -5,22 +5,10 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ObservableList;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 
-public class ParticipantList {
-    private ListProperty<Participant> participants;
+public class ParticipantList extends AbstractAggregatedList<Participant> {
 
     public ParticipantList() {
-        participants = new SimpleListProperty<>();
+        super();
     }
 
-    public ObservableList<Participant> getParticipants() {
-        return participants.get();
-    }
-
-    public ListProperty<Participant> participantsProperty() {
-        return participants;
-    }
-
-    public void setParticipants(ObservableList<Participant> participants) {
-        this.participants.set(participants);
-    }
 }

@@ -51,7 +51,7 @@ public class ProjectViewController {
     }
 
     private void bindTableProperties() {
-        tableView.itemsProperty().bind(projectList.projectsProperty());
+        tableView.itemsProperty().bind(projectList.getProperty());
     }
 
     private void bindButtonProperties() {
@@ -82,17 +82,17 @@ public class ProjectViewController {
 
     @FXML
     private void loadActive() {
-        projectList.setProjects(FXCollections.observableArrayList());
+        projectList.setElements(FXCollections.observableArrayList());
     }
 
     @FXML
     private void loadAll() {
-        projectList.setProjects(FXCollections.observableList(projectDao.findAll()));
+        projectList.setElements(FXCollections.observableList(projectDao.findAll()));
     }
 
     @FXML
     private void loadArchival() {
-        projectList.setProjects(FXCollections.observableArrayList());
+        projectList.setElements(FXCollections.observableArrayList());
     }
 
     @FXML
@@ -112,7 +112,7 @@ public class ProjectViewController {
                     projectGroupDao.save(presenter.getProject().getProjectGroup());
                 }
                 projectDao.save(presenter.getProject());
-                projectList.getProjects().add(presenter.getProject());
+                projectList.getElements().add(presenter.getProject());
             }
         }
         catch (IOException exc) {
@@ -147,6 +147,6 @@ public class ProjectViewController {
     void removeSelectedProject() {
         Project selectedProject = tableView.getSelectionModel().getSelectedItem();
         projectDao.delete(selectedProject);
-        projectList.getProjects().remove(selectedProject);
+        projectList.getElements().remove(selectedProject);
     }
 }

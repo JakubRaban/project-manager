@@ -10,11 +10,9 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
-import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import pl.edu.agh.gastronomiastosowana.presenter.ParticipantEditPanePresenter;
-import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 
 import java.io.IOException;
 
@@ -39,7 +37,7 @@ public class ParticipantViewController {
     }
 
     private void bindTableProperties() {
-        tableView.itemsProperty().bind(participantList.participantsProperty());
+        tableView.itemsProperty().bind(participantList.getProperty());
     }
 
     private void bindButtonProperties() {
@@ -50,7 +48,7 @@ public class ParticipantViewController {
 
     @FXML
     private void loadAll() {
-        participantList.setParticipants(FXCollections.observableList(participantDao.findAll()));
+        participantList.setElements(FXCollections.observableList(participantDao.findAll()));
     }
 
     @FXML
@@ -67,7 +65,7 @@ public class ParticipantViewController {
 
             if (presenter.isAccepted()) {
                 participantDao.save(presenter.getParticipant());
-                participantList.getParticipants().add(presenter.getParticipant());
+                participantList.getElements().add(presenter.getParticipant());
             }
         }
         catch (IOException exc) {
@@ -101,6 +99,6 @@ public class ParticipantViewController {
     private void removeSelectedParticipant() {
         Participant selectedParticipant = tableView.getSelectionModel().getSelectedItem();
         participantDao.delete(selectedParticipant);
-        participantList.getParticipants().remove(selectedParticipant);
+        participantList.getElements().remove(selectedParticipant);
     }
 }

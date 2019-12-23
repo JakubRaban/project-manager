@@ -43,8 +43,8 @@ public class ProjectGroupParticipantEditPanePresenter {
     @FXML private Button setLeaderButton;
 
     private void bindTableProperties() {
-        tableCurrentUsersView.itemsProperty().bind(currentUsersList.participantsProperty());
-        tableNotAssignedUsersView.itemsProperty().bind(notAssignedUsersList.participantsProperty());
+        tableCurrentUsersView.itemsProperty().bind(currentUsersList.getProperty());
+        tableNotAssignedUsersView.itemsProperty().bind(notAssignedUsersList.getProperty());
     }
     private void bindButtonProperties() {
         // TODO: repair bindings
@@ -86,19 +86,19 @@ public class ProjectGroupParticipantEditPanePresenter {
     @FXML
     private void loadCurrentParticipants() {
         System.out.println(projectGroup.getParticipants());
-        currentUsersList.setParticipants(FXCollections.observableList(participantDao.
+        currentUsersList.setElements(FXCollections.observableList(participantDao.
                 findAll().
                 stream().
-                filter(x -> x.getWorksFor().contains(this.projectGroup)).
+                filter(x -> x.getParticipatesIn().contains(this.projectGroup)).
                 collect(Collectors.toList())));
     }
     @FXML
     private void loadNotAssignedParticipants() {
 
-        notAssignedUsersList.setParticipants(FXCollections.observableList(participantDao.
+        notAssignedUsersList.setElements(FXCollections.observableList(participantDao.
                 findAll().
                 stream().
-                filter(x -> ! x.getWorksFor().contains(this.projectGroup)).
+                filter(x -> ! x.getParticipatesIn().contains(this.projectGroup)).
                 collect(Collectors.toList())));
     }
     @FXML

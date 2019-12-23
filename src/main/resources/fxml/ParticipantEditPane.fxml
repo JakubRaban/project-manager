@@ -26,7 +26,7 @@
          <children>
             <Label maxWidth="1.7976931348623157E308" text="Name:" />
             <Label maxWidth="1.7976931348623157E308" text="Surname:" GridPane.rowIndex="1" />
-            <Label maxWidth="1.7976931348623157E308" text="Age:" GridPane.rowIndex="2" />
+            <Label maxWidth="1.7976931348623157E308" text="Index number:" GridPane.rowIndex="2" />
             <Label maxWidth="1.7976931348623157E308" text="Email:" GridPane.rowIndex="3" />
 
             <TextField fx:id="nameInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />

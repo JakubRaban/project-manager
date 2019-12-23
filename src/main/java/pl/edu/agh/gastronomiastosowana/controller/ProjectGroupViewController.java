@@ -54,7 +54,7 @@ public class ProjectGroupViewController {
         loadAll();
     }
     private void bindTableProperties() {
-        tableView.itemsProperty().bind(projectGroupList.projectGroupProperty());
+        tableView.itemsProperty().bind(projectGroupList.getProperty());
     }
 
     private void bindButtonProperties() {
@@ -93,17 +93,17 @@ public class ProjectGroupViewController {
 
     @FXML
     private void loadActive() {
-        projectGroupList.setProjectGroups(FXCollections.observableArrayList());
+        projectGroupList.setElements(FXCollections.observableArrayList());
     }
 
     @FXML
     private void loadAll() {
-        projectGroupList.setProjectGroups((FXCollections.observableList(projectGroupDao.findAll())));
+        projectGroupList.setElements((FXCollections.observableList(projectGroupDao.findAll())));
     }
 
     @FXML
     private void loadArchival() {
-        projectGroupList.setProjectGroups(FXCollections.observableArrayList());
+        projectGroupList.setElements(FXCollections.observableArrayList());
     }
 
     @FXML

@@ -25,9 +25,9 @@ public class Participant {
     @Transient
     private ObjectProperty<LocalDate> registrationDate;
     @Transient
-    private SetProperty<ProjectGroup> worksFor;
+    private SetProperty<ProjectGroup> participatesIn;
     @Transient
-    private SetProperty<ProjectGroup> managedProjectGroups;
+    private SetProperty<ProjectGroup> leaderIn;
     @Transient
     private SetProperty<Rating> ratings;
 
@@ -42,8 +42,8 @@ public class Participant {
     }
 
     public Participant() {
-        worksFor = new SimpleSetProperty<ProjectGroup>(this, "worksFor");
-        managedProjectGroups = new SimpleSetProperty<ProjectGroup>(this, "managedProjectGroup");
+        participatesIn = new SimpleSetProperty<>(this, "worksFor");
+        leaderIn = new SimpleSetProperty<>(this, "managedProjectGroup");
 
         name = new SimpleStringProperty(this, "name");
         surname = new SimpleStringProperty(this, "surname");
@@ -52,8 +52,8 @@ public class Participant {
         registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
         ratings = new SimpleSetProperty<>(this, "ratings");
 
-        setWorksFor(new HashSet<ProjectGroup>());
-        setManagedProjectGroups(new HashSet<ProjectGroup>());
+        setParticipatesIn(new HashSet<>());
+        setLeaderIn(new HashSet<>());
         setRegistrationDate(LocalDate.now());
     }
 
@@ -120,26 +120,26 @@ public class Participant {
 
     @Access(AccessType.PROPERTY)
     @ManyToMany
-    public Set<ProjectGroup> getWorksFor() {
-        return worksFor.get();
+    public Set<ProjectGroup> getParticipatesIn() {
+        return participatesIn.get();
     }
-    public void setWorksFor(Set<ProjectGroup> projectGroups) {
-        this.worksFor.set(FXCollections.observableSet(projectGroups));
+    public void setParticipatesIn(Set<ProjectGroup> projectGroups) {
+        this.participatesIn.set(FXCollections.observableSet(projectGroups));
     }
     public SetProperty<ProjectGroup> worksForProperty() {
-        return worksFor;
+        return participatesIn;
     }
 
     @Access(AccessType.PROPERTY)
     @OneToMany(mappedBy = "leader")
-    public Set<ProjectGroup> getManagedProjectGroups() {
-        return managedProjectGroups.get();
+    public Set<ProjectGroup> getLeaderIn() {
+        return leaderIn.get();
     }
-    public void setManagedProjectGroups(Set<ProjectGroup> projectGroups) {
-        this.managedProjectGroups.set(FXCollections.observableSet(projectGroups));
+    public void setLeaderIn(Set<ProjectGroup> projectGroups) {
+        this.leaderIn.set(FXCollections.observableSet(projectGroups));
     }
     public SetProperty<ProjectGroup> managedProjectGroupsProperty() {
-        return managedProjectGroups;
+        return leaderIn;
     }
 
     @Access(AccessType.PROPERTY)
