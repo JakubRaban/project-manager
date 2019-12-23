@@ -73,7 +73,7 @@
        </GridPane>
        <HBox alignment="TOP_CENTER" prefHeight="38.0" prefWidth="431.0" spacing="10.0">
         <children>
-            <Label fx:id="currentChiefLabel" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="currentLeaderLabel" alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS"/>
         </children>
        </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="431.0" spacing="10.0">
@@ -81,7 +81,7 @@
             <Button defaultButton="true" mnemonicParsing="false" onAction="#accept" prefWidth="80.0" text="OK" />
              <Button fx:id="addButton" mnemonicParsing="false" onAction="#addToGroup" prefWidth="80.0" text="Add" />
              <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeFromGroup" prefWidth="80.0" text="Remove" />
-             <Button fx:id="setChiefButton" mnemonicParsing="false" onAction="#setAsChief" prefWidth="120.0" text="Set as chief" />
+             <Button fx:id="setLeaderButton" mnemonicParsing="false" onAction="#setAsLeader" prefWidth="120.0" text="Set as leader" />
          </children>
          <opaqueInsets>
             <Insets />

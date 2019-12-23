@@ -6,11 +6,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
-import pl.edu.agh.gastronomiastosowana.model.Rating;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.InvalidRatingValueException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 public class ParticipantEditPanePresenter {
@@ -24,7 +21,7 @@ public class ParticipantEditPanePresenter {
     @FXML private Label dialogTypeLabel;
     @FXML private TextField nameInput;
     @FXML private TextField surnameInput;
-    @FXML private TextField ageInput;
+    @FXML private TextField indexNumberInput;
     @FXML private TextField emailInput;
 
     @FXML private Label errorLabel;
@@ -62,7 +59,7 @@ public class ParticipantEditPanePresenter {
         final String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         String name = Optional.ofNullable(nameInput.getText()).orElse("").trim();
         String surname = Optional.ofNullable(surnameInput.getText()).orElse("").trim();
-        String age = Optional.ofNullable(ageInput.getText()).orElse("").trim();
+        String age = Optional.ofNullable(indexNumberInput.getText()).orElse("").trim();
         String email = Optional.ofNullable(emailInput.getText()).orElse("").trim();
 
 
@@ -85,7 +82,7 @@ public class ParticipantEditPanePresenter {
     private void updateParticipant() {
         participant.setName(nameInput.getText().trim());
         participant.setSurname(surnameInput.getText().trim());
-        participant.setAge(Integer.parseInt(ageInput.getText()));
+        participant.setIndexNumber(indexNumberInput.getText());
         participant.setEmail(emailInput.getText());
 
     }
@@ -115,13 +112,13 @@ public class ParticipantEditPanePresenter {
         if(participant == null) {
             nameInput.clear();
             surnameInput.clear();
-            ageInput.clear();
+            indexNumberInput.clear();
             emailInput.clear();
         }
         else {
             nameInput.setText(participant.getName());
             surnameInput.setText(participant.getSurname());
-            ageInput.setText(Integer.toString(participant.getAge()));
+            indexNumberInput.setText(participant.getIndexNumber());
             emailInput.setText(participant.getEmail());
         }
     }

@@ -35,7 +35,7 @@ public class ProjectGroupViewController {
 
     @FXML private TableView<ProjectGroup> tableView;
 
-    @FXML private Label chiefLabel;
+    @FXML private Label leaderLabel;
     @FXML private Label creationDateLabel;
     @FXML private Label activeLabel;
     @FXML private Label projectNameLabel;
@@ -83,12 +83,12 @@ public class ProjectGroupViewController {
                 .otherwise("");
         creationDateLabel.textProperty().bind(creationDateStringBinding);
 
-        ObjectBinding<LocalDate> chiefBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "chief", "name");
-        StringBinding chiefStringBinding = Bindings
-                .when(chiefBinding.isNotNull())
-                .then(chiefBinding.asString())
+        ObjectBinding<LocalDate> leaderBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "leader", "name");
+        StringBinding leaderStringBinding = Bindings
+                .when(leaderBinding.isNotNull())
+                .then(leaderBinding.asString())
                 .otherwise("");
-        chiefLabel.textProperty().bind(chiefStringBinding);
+        leaderLabel.textProperty().bind(leaderStringBinding);
     }
 
     @FXML

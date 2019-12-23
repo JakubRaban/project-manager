@@ -19,9 +19,9 @@
                   <PropertyValueFactory property="surname" />
               </cellValueFactory>
           </TableColumn>
-          <TableColumn prefWidth="91.0" text="Age">
+          <TableColumn prefWidth="91.0" text="Index number">
             <cellValueFactory>
-              <PropertyValueFactory property="age" />
+              <PropertyValueFactory property="indexNumber" />
             </cellValueFactory>
           </TableColumn>
           <TableColumn prefWidth="125.0" text="Email">

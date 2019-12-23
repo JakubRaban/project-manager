@@ -16,15 +16,15 @@ public class ProjectGroupDao extends GenericDao<ProjectGroup>{
         super();
     }
 
-    public List<ProjectGroup> findProjectGroupsByChief(Participant chief){
+    public List<ProjectGroup> findProjectGroupsByLeader(Participant leader){
         final Session session = SessionService.getSession();
-        Query PGByChiefQuery = session.createQuery("from ProjectGroup as pg " +
-                "where pg.chief = :chief", ProjectGroup.class);
-        PGByChiefQuery.setParameter("chief", chief);
+        Query PGByLeaderQuery = session.createQuery("from ProjectGroup as pg " +
+                "where pg.leader = :leader", ProjectGroup.class);
+        PGByLeaderQuery.setParameter("leader", leader);
 
         List<ProjectGroup> result;
 
-        result = (List<ProjectGroup>) PGByChiefQuery.getResultList();
+        result = (List<ProjectGroup>) PGByLeaderQuery.getResultList();
 
         return result;
     }
@@ -32,13 +32,13 @@ public class ProjectGroupDao extends GenericDao<ProjectGroup>{
     public Optional<ProjectGroup> findProjectGroupByProject(Project project){
         final Session session = SessionService.getSession();
 
-        Query PGByChiefQuery = session.createQuery("from ProjectGroup as pg " +
+        Query PGByLeaderQuery = session.createQuery("from ProjectGroup as pg " +
                 "where pg.project = :project", ProjectGroup.class);
-        PGByChiefQuery.setParameter("project", project);
+        PGByLeaderQuery.setParameter("project", project);
 
         Optional result;
 
-        result = PGByChiefQuery.getResultStream().findFirst();
+        result = PGByLeaderQuery.getResultStream().findFirst();
 
         return result;
     }

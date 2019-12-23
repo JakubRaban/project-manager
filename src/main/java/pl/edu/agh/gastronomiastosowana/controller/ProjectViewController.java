@@ -33,7 +33,7 @@ public class ProjectViewController {
     @FXML private Label projectGroupNameLabel;
     @FXML private Label activeLabel;
     @FXML private Label creationDateLabel;
-    @FXML private Label chiefLabel;
+    @FXML private Label leaderLabel;
     @FXML private Label participantCountLabel;
     @FXML private Label averageScoreLabel;
 

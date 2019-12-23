@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 import pl.edu.agh.gastronomiastosowana.model.Project;
-import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.GroupAlreadyAssignedException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.time.LocalDate;
@@ -158,7 +156,7 @@ public class ProjectEditPanePresenter {
     }
 
     public void cancelGroupAssignment(){
-        project.cancelProjectGroup();
+        project.cancelProjectGroupAssignment();
 
         projectGroupInput.setVisible(true);
         projectGroupLabel.setVisible(false);

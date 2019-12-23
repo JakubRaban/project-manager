@@ -31,7 +31,7 @@
 
             <TextField fx:id="nameInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
             <TextField fx:id="surnameInput" prefWidth="231.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="ageInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="indexNumberInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="emailInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>

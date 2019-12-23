@@ -11,8 +11,8 @@ import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.ChiefNotSetException;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.ChiefRemovalException;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderNotSetException;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
@@ -36,11 +36,11 @@ public class ProjectGroupParticipantEditPanePresenter {
     private ProjectGroup projectGroup;
 
     @FXML private Label dialogTypeLabel;
-    @FXML private Label currentChiefLabel;
+    @FXML private Label currentLeaderLabel;
     @FXML private Label errorLabel;
     @FXML private Button addButton;
     @FXML private Button removeButton;
-    @FXML private Button setChiefButton;
+    @FXML private Button setLeaderButton;
 
     private void bindTableProperties() {
         tableCurrentUsersView.itemsProperty().bind(currentUsersList.participantsProperty());
@@ -53,7 +53,7 @@ public class ProjectGroupParticipantEditPanePresenter {
 
         addButton.disableProperty().bind(disableBindingNonActiveUsers);
         removeButton.disableProperty().bind(disableBindingActiveUsers);
-        setChiefButton.disableProperty().bind(disableBindingActiveUsers);
+        setLeaderButton.disableProperty().bind(disableBindingActiveUsers);
     }
     @FXML
     private void initialize() {
@@ -102,13 +102,13 @@ public class ProjectGroupParticipantEditPanePresenter {
                 collect(Collectors.toList())));
     }
     @FXML
-    private void loadCurrentChief(){
-        Participant chief = projectGroup.getChief();
-        if(chief != null)
-            currentChiefLabel.setText("Current chief: " + chief.getName()
-                + " " + chief.getSurname());
+    private void loadCurrentLeader(){
+        Participant leader = projectGroup.getLeader();
+        if(leader != null)
+            currentLeaderLabel.setText("Current leader: " + leader.getName()
+                + " " + leader.getSurname());
         else
-            currentChiefLabel.setText("Current chief: none");
+            currentLeaderLabel.setText("Current leader: none");
     }
 
 
@@ -135,7 +135,7 @@ public class ProjectGroupParticipantEditPanePresenter {
         loadCurrentParticipants();
         loadNotAssignedParticipants();
 
-        loadCurrentChief();
+        loadCurrentLeader();
 
         bindTableProperties();
         bindTableProperties();
@@ -159,8 +159,8 @@ public class ProjectGroupParticipantEditPanePresenter {
             errorLabel.setText(null);
         } catch (NonPresentParticipantRemovalException e) {
             e.printStackTrace();
-        } catch (ChiefRemovalException e) {
-            errorLabel.setText("Cannot remove group chief from group");
+        } catch (LeaderRemovalException e) {
+            errorLabel.setText("Cannot remove group leader from group");
         }
 
 
@@ -178,12 +178,12 @@ public class ProjectGroupParticipantEditPanePresenter {
         errorLabel.setText(null);
     }
 
-    public void setAsChief(ActionEvent actionEvent) throws ChiefNotSetException {
-        Participant newChief = tableCurrentUsersView.getSelectionModel().getSelectedItem();
-        projectGroup.changeChief(newChief);
+    public void setAsLeader(ActionEvent actionEvent) throws LeaderNotSetException {
+        Participant newLeader = tableCurrentUsersView.getSelectionModel().getSelectedItem();
+        projectGroup.setLeader(newLeader);
 
         projectGroupDao.update(projectGroup);
-        loadCurrentChief();
+        loadCurrentLeader();
         errorLabel.setText(null);
     }
 }

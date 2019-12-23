@@ -81,8 +81,8 @@
             <Label fx:id="activeLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label maxWidth="1.7976931348623157E308" text="Creation date:" GridPane.rowIndex="2" />
             <Label fx:id="creationDateLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label maxWidth="1.7976931348623157E308" text="Chief:" GridPane.rowIndex="3" />
-            <Label fx:id="chiefLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label maxWidth="1.7976931348623157E308" text="Leader:" GridPane.rowIndex="3" />
+            <Label fx:id="leaderLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label maxWidth="1.7976931348623157E308" text="Participant count:" GridPane.rowIndex="4" />
             <Label fx:id="participantCountLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label maxWidth="1.7976931348623157E308" text="Average score:" GridPane.rowIndex="5" />
