@@ -18,6 +18,7 @@ import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ProjectViewController {
     private ProjectList projectList;
@@ -81,18 +82,23 @@ public class ProjectViewController {
     }
 
     @FXML
-    private void loadActive() {
-        projectList.setElements(FXCollections.observableArrayList());
-    }
-
-    @FXML
     private void loadAll() {
         projectList.setElements(FXCollections.observableList(projectDao.findAll()));
     }
 
     @FXML
+    private void loadActive() {
+        projectList.setElements(FXCollections.observableList(projectDao.findActiveProjects()));
+    }
+
+    @FXML
     private void loadArchival() {
-        projectList.setElements(FXCollections.observableArrayList());
+        projectList.setElements(FXCollections.observableList(projectDao.findArchivalProjects()));
+    }
+
+    @FXML
+    private void loadFuture() {
+        projectList.setElements(FXCollections.observableList(projectDao.findFutureProjects()));
     }
 
     @FXML

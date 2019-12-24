@@ -18,6 +18,7 @@
                   </RadioButton>
                   <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All" toggleGroup="$projectTypeGroup" />
                   <RadioButton fx:id="toggleArchival" mnemonicParsing="false" onAction="#loadArchival" text="Archival" toggleGroup="$projectTypeGroup" />
+                  <RadioButton fx:id="toggleFuture" mnemonicParsing="false" onAction="#loadFuture" text="Future" toggleGroup="$projectTypeGroup"/>
                </children>
                <VBox.margin>
                   <Insets />
