@@ -11,12 +11,12 @@
          <children>
             <VBox spacing="5.0">
                <children>
-                  <RadioButton fx:id="toggleActive" mnemonicParsing="false" onAction="#loadActive" text="Active">
+                  <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All" toggleGroup="$projectTypeGroup" >
                      <toggleGroup>
                         <ToggleGroup fx:id="projectTypeGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All" toggleGroup="$projectTypeGroup" />
+                  <RadioButton fx:id="toggleActive" mnemonicParsing="false" onAction="#loadActive" text="Active" toggleGroup="$projectTypeGroup"/>
                   <RadioButton fx:id="toggleArchival" mnemonicParsing="false" onAction="#loadArchival" text="Archival" toggleGroup="$projectTypeGroup" />
                   <RadioButton fx:id="toggleFuture" mnemonicParsing="false" onAction="#loadFuture" text="Future" toggleGroup="$projectTypeGroup"/>
                </children>
