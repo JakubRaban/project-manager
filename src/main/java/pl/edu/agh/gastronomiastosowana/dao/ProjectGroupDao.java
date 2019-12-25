@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProjectGroupDao extends GenericDao<ProjectGroup>{
+public class ProjectGroupDao extends GenericDao<ProjectGroup> {
 
     private ProjectDao projects = new ProjectDao();
 
