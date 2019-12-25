@@ -33,12 +33,10 @@ public class Participant {
 
     public Participant(String name, String surname, String age, String email) {
         this();
-
         setName(name);
         setSurname(surname);
         setIndexNumber(age);
         setEmail(email);
-
     }
 
     public Participant() {
@@ -162,6 +160,10 @@ public class Participant {
 
     public boolean isParticipantIn(ProjectGroup projectGroup) {
         return getParticipatesIn().contains(projectGroup);
+    }
+
+    public String getNameEmailLabel() {
+        return getName() + " " + getSurname() + " (" + getEmail() + ")\n" + getIndexNumber();
     }
 }
 

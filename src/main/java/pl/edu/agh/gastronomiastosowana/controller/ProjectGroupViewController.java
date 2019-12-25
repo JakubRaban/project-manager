@@ -74,7 +74,6 @@ public class ProjectGroupViewController {
                 .otherwise("");
         activeLabel.textProperty().bind(activeStringBinding);
 
-
         ObjectBinding<LocalDate> creationDateBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "creationDate");
         StringBinding creationDateStringBinding = Bindings
                 .when(creationDateBinding.isNotNull())
@@ -82,7 +81,7 @@ public class ProjectGroupViewController {
                 .otherwise("");
         creationDateLabel.textProperty().bind(creationDateStringBinding);
 
-        ObjectBinding<LocalDate> leaderBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "leader", "name");
+        ObjectBinding<LocalDate> leaderBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "leader", "nameEmailLabel");
         StringBinding leaderStringBinding = Bindings
                 .when(leaderBinding.isNotNull())
                 .then(leaderBinding.asString())

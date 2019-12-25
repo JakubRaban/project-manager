@@ -34,6 +34,7 @@ public class ProjectGroup {
         this();
         setGroupName(groupName);
         setCreationDate(LocalDate.now());
+        setActive(true);
     }
 
     public ProjectGroup() {
