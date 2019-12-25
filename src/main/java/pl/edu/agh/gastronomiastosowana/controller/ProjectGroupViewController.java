@@ -93,7 +93,7 @@ public class ProjectGroupViewController {
 
     @FXML
     private void loadActive() {
-        projectGroupList.setElements(FXCollections.observableArrayList());
+        projectGroupList.setElements(FXCollections.observableList(projectGroupDao.findActiveProjectGroups()));
     }
 
     @FXML
@@ -103,7 +103,12 @@ public class ProjectGroupViewController {
 
     @FXML
     private void loadArchival() {
-        projectGroupList.setElements(FXCollections.observableArrayList());
+        projectGroupList.setElements(FXCollections.observableList(projectGroupDao.findArchivalProjectGroups()));
+    }
+
+    @FXML
+    private void loadFuture() {
+        projectGroupList.setElements(FXCollections.observableList(projectGroupDao.findFutureProjectGroups()));
     }
 
     @FXML

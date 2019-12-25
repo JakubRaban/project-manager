@@ -11,13 +11,14 @@
          <children>
             <VBox spacing="5.0">
                <children>
-                  <RadioButton fx:id="toggleActive" mnemonicParsing="false" onAction="#loadActive" text="Active">
+                  <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All">
                      <toggleGroup>
                         <ToggleGroup fx:id="projectTypeGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="toggleAll" mnemonicParsing="false" onAction="#loadAll" selected="true" text="All" toggleGroup="$projectTypeGroup" />
+                  <RadioButton fx:id="toggleActive" mnemonicParsing="false" onAction="#loadActive" text="Active" toggleGroup="$projectTypeGroup" />
                   <RadioButton fx:id="toggleArchival" mnemonicParsing="false" onAction="#loadArchival" text="Archival" toggleGroup="$projectTypeGroup" />
+                  <RadioButton fx:id="toggleFuture" mnemonicParsing="false" onAction="#loadFuture" text="Future" toggleGroup="$projectTypeGroup" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -28,10 +29,10 @@
             </VBox>
             <VBox spacing="5.0">
                <children>
-                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project" />
+                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project group details" />
                </children>
                <children>
-                  <Button fx:id="editParticipantsButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editParticipants" prefHeight="28.0" prefWidth="116.0" text="Edit Participants" />
+                  <Button fx:id="editParticipantsButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editParticipants" prefHeight="28.0" prefWidth="116.0" text="Edit participants" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
