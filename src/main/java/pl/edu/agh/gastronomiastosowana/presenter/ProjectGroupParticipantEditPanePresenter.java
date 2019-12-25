@@ -66,21 +66,15 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
 
     @FXML
     private void loadCurrentParticipants() {
-        System.out.println(projectGroup.getParticipants());
-        currentUsersList.setElements(FXCollections.observableList(participantDao.
-                findAll().
-                stream().
-                filter(x -> x.getParticipatesIn().contains(this.projectGroup)).
-                collect(Collectors.toList())));
+        currentUsersList.setElements(FXCollections.observableList(
+                participantDao.findParticipantsAssignedTo(this.projectGroup)
+        ));
     }
     @FXML
     private void loadNotAssignedParticipants() {
-
-        notAssignedUsersList.setElements(FXCollections.observableList(participantDao.
-                findAll().
-                stream().
-                filter(x -> ! x.getParticipatesIn().contains(this.projectGroup)).
-                collect(Collectors.toList())));
+        notAssignedUsersList.setElements(FXCollections.observableList(
+                participantDao.findParticipantsNotAssignedTo(this.projectGroup)
+        ));
     }
     @FXML
     private void loadCurrentLeader(){
@@ -101,7 +95,6 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
 
         loadCurrentParticipants();
         loadNotAssignedParticipants();
-
         loadCurrentLeader();
 
         bindTableProperties();
@@ -120,7 +113,6 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
         } catch (LeaderRemovalException e) {
             setErrorLabel("Cannot remove group leader from group");
         }
-
 
         projectGroupDao.update(projectGroup);
     }

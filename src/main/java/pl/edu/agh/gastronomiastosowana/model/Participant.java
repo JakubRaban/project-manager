@@ -159,5 +159,9 @@ public class Participant {
     public void addRating(Rating rating) {
         this.ratings.add(rating);
     }
+
+    public boolean isParticipantIn(ProjectGroup projectGroup) {
+        return getParticipatesIn().contains(projectGroup);
+    }
 }
 
