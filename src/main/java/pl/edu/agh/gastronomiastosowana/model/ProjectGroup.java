@@ -128,4 +128,8 @@ public class ProjectGroup {
     public void setParticipants(Set<Participant> participants) {
         this.participants = participants;
     }
+
+    public int getParticipantCount() {
+        return this.participants.size();
+    }
 }

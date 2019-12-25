@@ -38,6 +38,7 @@ public class ProjectGroupViewController {
     @FXML private Label creationDateLabel;
     @FXML private Label activeLabel;
     @FXML private Label projectNameLabel;
+    @FXML private Label participantCountLabel;
     @FXML private Button editButton;
     @FXML private Button editParticipantsButton;
 
@@ -81,12 +82,19 @@ public class ProjectGroupViewController {
                 .otherwise("");
         creationDateLabel.textProperty().bind(creationDateStringBinding);
 
-        ObjectBinding<LocalDate> leaderBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "leader", "nameEmailLabel");
+        ObjectBinding<String> leaderBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "leader", "nameEmailLabel");
         StringBinding leaderStringBinding = Bindings
                 .when(leaderBinding.isNotNull())
                 .then(leaderBinding.asString())
                 .otherwise("");
         leaderLabel.textProperty().bind(leaderStringBinding);
+
+        ObjectBinding<Integer> participantCountBinding = Bindings.select(tableView.getSelectionModel().selectedItemProperty(), "participantCount");
+        StringBinding participantCountStringBinding = Bindings
+                .when(participantCountBinding.isNotNull())
+                .then(participantCountBinding.asString())
+                .otherwise("");
+        participantCountLabel.textProperty().bind(participantCountStringBinding);
     }
 
     @FXML
