@@ -4,8 +4,9 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Window;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
@@ -14,10 +15,8 @@ import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderNotSetException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
-import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter {
 

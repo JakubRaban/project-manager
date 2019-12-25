@@ -4,8 +4,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderIsSetException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.GroupAlreadyAssignedException;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderIsSetException;
 
 import javax.persistence.*;
 import java.time.LocalDate;

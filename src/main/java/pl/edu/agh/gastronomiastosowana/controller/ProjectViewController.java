@@ -8,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Project;
@@ -18,7 +21,6 @@ import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class ProjectViewController {
     private ProjectList projectList;

@@ -8,7 +8,6 @@ import pl.edu.agh.gastronomiastosowana.session.SessionService;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ParticipantDao extends GenericDao<Participant> {

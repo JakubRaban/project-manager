@@ -7,7 +7,9 @@ import pl.edu.agh.gastronomiastosowana.session.SessionService;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class ProjectDao extends GenericDao<Project> {
 

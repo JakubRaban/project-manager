@@ -6,9 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Window;
 import pl.edu.agh.gastronomiastosowana.model.Project;
-import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.time.LocalDate;
 import java.util.Optional;

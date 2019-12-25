@@ -6,7 +6,6 @@ import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.session.SessionService;
 
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
