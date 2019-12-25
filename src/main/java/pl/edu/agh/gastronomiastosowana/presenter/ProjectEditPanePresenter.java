@@ -22,7 +22,6 @@ public class ProjectEditPanePresenter extends AbstractPresenter {
     @FXML private TextField projectGroupInput;
     @FXML private Label projectGroupLabel;
     @FXML private Button projectGroupCancelButton;
-    @FXML private Label errorLabel;
 
     @FXML
     private void initialize() {
@@ -30,18 +29,7 @@ public class ProjectEditPanePresenter extends AbstractPresenter {
         setProject(new Project());
     }
 
-    @FXML
-    public void accept() {
-        Optional<String> error = validateInput();
-        if (error.isPresent()) {
-            errorLabel.setText(error.get());
-            return;
-        }
-        updateProject();
-        super.accept();
-    }
-
-    private Optional<String> validateInput() {
+    public Optional<String> validateInput() {
         String name = Optional.ofNullable(projectNameInput.getText()).orElse("").trim();
         LocalDate startDate = startDateInput.getValue();
         LocalDate endDate = endDateInput.getValue();
@@ -55,7 +43,7 @@ public class ProjectEditPanePresenter extends AbstractPresenter {
         return Optional.empty();
     }
 
-    private void updateProject() {
+    public void update() {
         project.setName(projectNameInput.getText().trim());
         project.setStartDate(startDateInput.getValue());
         if (endDateInput.getValue() != null) {

@@ -5,14 +5,18 @@ import javafx.scene.control.Label;
 import javafx.stage.Window;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
+import java.util.Optional;
+
 public abstract class AbstractPresenter {
 
     private boolean accepted;
     private ItemInputType itemInputType;
-    @FXML
-    private Label dialogTypeLabel;
     private Window window;
     private String presenterType;
+    @FXML
+    private Label dialogTypeLabel;
+    @FXML
+    private Label errorLabel;
 
     @FXML
     public void initialize(String presenterType) {
@@ -22,8 +26,15 @@ public abstract class AbstractPresenter {
 
     @FXML
     public void accept() {
-        accepted = true;
-        window.hide();
+        Optional<String> errorMessage = validateInput();
+        errorMessage.ifPresentOrElse(
+                errorLabel::setText,
+                () -> {
+                    update();
+                    accepted = true;
+                    window.hide();
+                }
+        );
     }
 
     @FXML
@@ -55,5 +66,12 @@ public abstract class AbstractPresenter {
     public ItemInputType getItemInputType() {
         return itemInputType;
     }
+
+    public void setErrorLabel(String text) {
+        this.errorLabel.setText(text);
+    }
+
+    public abstract Optional<String> validateInput();
+    public abstract void update();
 
 }

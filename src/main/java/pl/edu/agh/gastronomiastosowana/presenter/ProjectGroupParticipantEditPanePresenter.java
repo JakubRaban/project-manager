@@ -16,6 +16,7 @@ import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter {
@@ -33,7 +34,6 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
     private ProjectGroup projectGroup;
 
     @FXML private Label currentLeaderLabel;
-    @FXML private Label errorLabel;
     @FXML private Button addButton;
     @FXML private Button removeButton;
     @FXML private Button setLeaderButton;
@@ -97,7 +97,6 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
     }
 
     public void setProjectGroup(ProjectGroup projectGroup) {
-        System.out.println("2");
         this.projectGroup = projectGroup;
 
         loadCurrentParticipants();
@@ -115,11 +114,11 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
             projectGroup.removeParticipant(removedParticipant);
             tableNotAssignedUsersView.getItems().add(removedParticipant);
             tableCurrentUsersView.getItems().remove(removedParticipant);
-            errorLabel.setText(null);
+            setErrorLabel(null);
         } catch (NonPresentParticipantRemovalException e) {
             e.printStackTrace();
         } catch (LeaderRemovalException e) {
-            errorLabel.setText("Cannot remove group leader from group");
+            setErrorLabel("Cannot remove group leader from group");
         }
 
 
@@ -134,7 +133,7 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
         tableCurrentUsersView.getItems().add(addedParticipant);
 
         projectGroupDao.update(projectGroup);
-        errorLabel.setText(null);
+        setErrorLabel(null);
     }
 
     public void setAsLeader(ActionEvent actionEvent) throws LeaderNotSetException {
@@ -143,6 +142,14 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
 
         projectGroupDao.update(projectGroup);
         loadCurrentLeader();
-        errorLabel.setText(null);
+        setErrorLabel(null);
+    }
+
+    public Optional<String> validateInput() {
+        return Optional.empty();
+    }
+
+    public void update() {
+        return;
     }
 }
