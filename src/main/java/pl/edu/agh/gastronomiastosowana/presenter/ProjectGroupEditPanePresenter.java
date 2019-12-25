@@ -17,15 +17,10 @@ import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class ProjectGroupEditPanePresenter {
+public class ProjectGroupEditPanePresenter extends AbstractPresenter {
 
-    @FXML
-    private Window window;
-    private boolean accepted;
-    private ItemInputType itemInputType;
     private ProjectGroup projectGroup;
 
-    @FXML private Label dialogTypeLabel;
     @FXML
     private DatePicker creationDateInput;
 
@@ -35,31 +30,18 @@ public class ProjectGroupEditPanePresenter {
 
     @FXML
     private void initialize() {
-
-        window = null;
-        accepted = false;
-        setItemInputType(ItemInputType.NEW_ITEM);
+        super.initialize("Project group");
         setProjectGroup(new ProjectGroup());
-
     }
 
-    @FXML
-    private void accept() {
+    public void accept() {
         Optional<String> error = validateInput();
         if (error.isPresent()) {
             errorLabel.setText(error.get());
             return;
         }
-
         updateProjectGroup();
-        accepted = true;
-        window.hide();
-    }
-
-    @FXML
-    private void reject() {
-        accepted = false;
-        window.hide();
+        super.accept();
     }
 
     private Optional<String> validateInput() {
@@ -85,22 +67,6 @@ public class ProjectGroupEditPanePresenter {
         creationDateInput.setValue(null);
     }
 
-    public ItemInputType getItemInputType() {
-        return itemInputType;
-    }
-
-    public void setItemInputType(ItemInputType itemInputType) {
-        this.itemInputType = itemInputType;
-        switch (this.itemInputType) {
-            case NEW_ITEM:
-                dialogTypeLabel.setText("Create new project");
-                break;
-            case EDIT_ITEM:
-                dialogTypeLabel.setText("Edit project");
-                break;
-        }
-    }
-
     public ProjectGroup getProjectGroup() {
         return projectGroup;
     }
@@ -118,15 +84,6 @@ public class ProjectGroupEditPanePresenter {
             creationDateInput.setValue(projectGroup.getCreationDate());
             activeCheckBox.setSelected(projectGroup.isActive());
         }
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
-        window.setOnCloseRequest(event -> reject());
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
 }

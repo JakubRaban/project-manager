@@ -10,15 +10,11 @@ import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.util.Optional;
 
-public class ParticipantEditPanePresenter {
+public class ParticipantEditPanePresenter extends AbstractPresenter {
     private RatingDao ratingDao;
 
-    private Window window;
-    private boolean accepted;
-    private ItemInputType itemInputType;
     private Participant participant;
 
-    @FXML private Label dialogTypeLabel;
     @FXML private TextField nameInput;
     @FXML private TextField surnameInput;
     @FXML private TextField indexNumberInput;
@@ -28,31 +24,20 @@ public class ParticipantEditPanePresenter {
 
     @FXML
     private void initialize() {
-        window = null;
-        accepted = false;
-        setItemInputType(ItemInputType.NEW_ITEM);
+        super.initialize("Participant");
         setParticipant(new Participant());
-
         ratingDao = new RatingDao();
     }
 
     @FXML
-    private void accept() {
+    public void accept() {
         Optional<String> error = validateInput();
         if (error.isPresent()) {
             errorLabel.setText(error.get());
             return;
         }
-
         updateParticipant();
-        accepted = true;
-        window.hide();
-    }
-
-    @FXML
-    private void reject() {
-        accepted = false;
-        window.hide();
+        super.accept();
     }
 
     private Optional<String> validateInput() {
@@ -87,22 +72,6 @@ public class ParticipantEditPanePresenter {
 
     }
 
-    public ItemInputType getItemInputType() {
-        return itemInputType;
-    }
-
-    public void setItemInputType(ItemInputType itemInputType) {
-        this.itemInputType = itemInputType;
-        switch (this.itemInputType) {
-            case NEW_ITEM:
-                dialogTypeLabel.setText("Add new participant");
-                break;
-            case EDIT_ITEM:
-                dialogTypeLabel.setText("Edit participant");
-                break;
-        }
-    }
-
     public Participant getParticipant() {
         return participant;
     }
@@ -121,14 +90,5 @@ public class ParticipantEditPanePresenter {
             indexNumberInput.setText(participant.getIndexNumber());
             emailInput.setText(participant.getEmail());
         }
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
-        window.setOnCloseRequest(event -> reject());
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 }

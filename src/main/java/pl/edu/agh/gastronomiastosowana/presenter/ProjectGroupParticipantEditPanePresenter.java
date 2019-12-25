@@ -18,7 +18,7 @@ import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.util.stream.Collectors;
 
-public class ProjectGroupParticipantEditPanePresenter {
+public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter {
 
     private ParticipantDao participantDao;
     private ProjectGroupDao projectGroupDao;
@@ -30,12 +30,8 @@ public class ProjectGroupParticipantEditPanePresenter {
     @FXML
     private TableView<Participant> tableNotAssignedUsersView;
 
-    private Window window;
-    private boolean accepted;
-    private ItemInputType itemInputType;
     private ProjectGroup projectGroup;
 
-    @FXML private Label dialogTypeLabel;
     @FXML private Label currentLeaderLabel;
     @FXML private Label errorLabel;
     @FXML private Button addButton;
@@ -56,11 +52,8 @@ public class ProjectGroupParticipantEditPanePresenter {
         setLeaderButton.disableProperty().bind(disableBindingActiveUsers);
     }
     @FXML
-    private void initialize() {
-        window = null;
-        accepted = false;
-        setItemInputType(ItemInputType.NEW_ITEM);
-        //setProjectGroup(new ProjectGroup());
+    public void initialize() {
+        super.initialize("Participants in Project group");
 
         participantDao = new ParticipantDao();
         projectGroupDao = new ProjectGroupDao();
@@ -69,18 +62,6 @@ public class ProjectGroupParticipantEditPanePresenter {
         notAssignedUsersList = new ParticipantList();
 
         bindButtonProperties();
-    }
-
-    @FXML
-    private void accept() {
-        accepted = true;
-        window.hide();
-    }
-
-    @FXML
-    private void reject() {
-        accepted = false;
-        window.hide();
     }
 
     @FXML
@@ -111,19 +92,6 @@ public class ProjectGroupParticipantEditPanePresenter {
             currentLeaderLabel.setText("Current leader: none");
     }
 
-
-    public void setItemInputType(ItemInputType itemInputType) {
-        this.itemInputType = itemInputType;
-        switch (this.itemInputType) {
-            case NEW_ITEM:
-                dialogTypeLabel.setText("Create new project");
-                break;
-            case EDIT_ITEM:
-                dialogTypeLabel.setText("Edit project");
-                break;
-        }
-    }
-
     public ProjectGroup getProjectGroup() {
         return projectGroup;
     }
@@ -139,15 +107,6 @@ public class ProjectGroupParticipantEditPanePresenter {
 
         bindTableProperties();
         bindTableProperties();
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
-        window.setOnCloseRequest(event -> reject());
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     public void removeFromGroup(ActionEvent actionEvent) {

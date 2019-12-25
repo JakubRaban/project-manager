@@ -13,13 +13,9 @@ import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class ProjectEditPanePresenter {
-    private Window window;
-    private boolean accepted;
-    private ItemInputType itemInputType;
+public class ProjectEditPanePresenter extends AbstractPresenter {
     private Project project;
 
-    @FXML private Label dialogTypeLabel;
     @FXML private TextField projectNameInput;
     @FXML private DatePicker startDateInput;
     @FXML private DatePicker endDateInput;
@@ -30,29 +26,19 @@ public class ProjectEditPanePresenter {
 
     @FXML
     private void initialize() {
-        window = null;
-        accepted = false;
-        setItemInputType(ItemInputType.NEW_ITEM);
+        super.initialize("Project");
         setProject(new Project());
     }
 
     @FXML
-    private void accept() {
+    public void accept() {
         Optional<String> error = validateInput();
         if (error.isPresent()) {
             errorLabel.setText(error.get());
             return;
         }
-
         updateProject();
-        accepted = true;
-        window.hide();
-    }
-
-    @FXML
-    private void reject() {
-        accepted = false;
-        window.hide();
+        super.accept();
     }
 
     private Optional<String> validateInput() {
@@ -88,22 +74,6 @@ public class ProjectEditPanePresenter {
     @FXML
     void clearEndDateInput(ActionEvent event) {
         endDateInput.setValue(null);
-    }
-
-    public ItemInputType getItemInputType() {
-        return itemInputType;
-    }
-
-    public void setItemInputType(ItemInputType itemInputType) {
-        this.itemInputType = itemInputType;
-        switch (this.itemInputType) {
-            case NEW_ITEM:
-                dialogTypeLabel.setText("Create new project");
-                break;
-            case EDIT_ITEM:
-                dialogTypeLabel.setText("Edit project");
-                break;
-        }
     }
 
     public Project getProject() {
@@ -144,15 +114,6 @@ public class ProjectEditPanePresenter {
 
 
         }
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
-        window.setOnCloseRequest(event -> reject());
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     public void cancelGroupAssignment(){
