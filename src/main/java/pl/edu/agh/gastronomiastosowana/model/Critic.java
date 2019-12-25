@@ -1,14 +1,9 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
-import com.sun.istack.NotNull;
-import javafx.beans.property.SetProperty;
-import javafx.beans.property.SimpleSetProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Critic {
@@ -16,21 +11,24 @@ public class Critic {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int criticID;
 
-    @Transient private StringProperty name;
-    @Transient private StringProperty surname;
-    @Transient private StringProperty email;
+    @Transient
+    private StringProperty name;
+    @Transient
+    private StringProperty surname;
+    @Transient
+    private StringProperty email;
 
-    public Critic(String name, String surname, String email){
+    public Critic(String name, String surname, String email) {
+        this();
+        setName(name);
+        setSurname(surname);
+        setEmail(email);
+    }
+
+    public Critic() {
         this.name = new SimpleStringProperty(this, "name");
         this.surname = new SimpleStringProperty(this, "surname");
         this.email = new SimpleStringProperty(this, "email");
-    }
-    public Critic(){
-        //hib
-    }
-
-    public StringProperty nameProperty() {
-        return name;
     }
 
     @Access(AccessType.PROPERTY)
@@ -38,17 +36,11 @@ public class Critic {
     public String getName() {
         return name.get();
     }
-
     public void setName(String name) {
         this.name.set(name);
     }
-
-    public StringProperty surnameProperty() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname.set(surname);
+    public StringProperty nameProperty() {
+        return name;
     }
 
     @Access(AccessType.PROPERTY)
@@ -56,19 +48,23 @@ public class Critic {
     public String getSurname(String surname) {
         return this.surname.get();
     }
-
-    public StringProperty emailProperty() {
-        return email;
+    public void setSurname(String surname) {
+        this.surname.set(surname);
     }
-
-    public void setEmail(String email) {
-        this.email.set(email);
+    public StringProperty surnameProperty() {
+        return surname;
     }
 
     @Access(AccessType.PROPERTY)
     @Column(nullable = false, unique = true)
     public String getEmail() {
         return this.email.get();
+    }
+    public void setEmail(String email) {
+        this.email.set(email);
+    }
+    public StringProperty emailProperty() {
+        return email;
     }
 
     public int getCriticID() {

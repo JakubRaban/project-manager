@@ -8,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Project;
@@ -33,7 +36,7 @@ public class ProjectViewController {
     @FXML private Label projectGroupNameLabel;
     @FXML private Label activeLabel;
     @FXML private Label creationDateLabel;
-    @FXML private Label chiefLabel;
+    @FXML private Label leaderLabel;
     @FXML private Label participantCountLabel;
     @FXML private Label averageScoreLabel;
 
@@ -51,7 +54,7 @@ public class ProjectViewController {
     }
 
     private void bindTableProperties() {
-        tableView.itemsProperty().bind(projectList.projectsProperty());
+        tableView.itemsProperty().bind(projectList.getProperty());
     }
 
     private void bindButtonProperties() {
@@ -81,18 +84,23 @@ public class ProjectViewController {
     }
 
     @FXML
-    private void loadActive() {
-        projectList.setProjects(FXCollections.observableArrayList());
+    private void loadAll() {
+        projectList.setElements(FXCollections.observableList(projectDao.findAll()));
     }
 
     @FXML
-    private void loadAll() {
-        projectList.setProjects(FXCollections.observableList(projectDao.findAll()));
+    private void loadActive() {
+        projectList.setElements(FXCollections.observableList(projectDao.findActiveProjects()));
     }
 
     @FXML
     private void loadArchival() {
-        projectList.setProjects(FXCollections.observableArrayList());
+        projectList.setElements(FXCollections.observableList(projectDao.findArchivalProjects()));
+    }
+
+    @FXML
+    private void loadFuture() {
+        projectList.setElements(FXCollections.observableList(projectDao.findFutureProjects()));
     }
 
     @FXML
@@ -112,7 +120,7 @@ public class ProjectViewController {
                     projectGroupDao.save(presenter.getProject().getProjectGroup());
                 }
                 projectDao.save(presenter.getProject());
-                projectList.getProjects().add(presenter.getProject());
+                projectList.getElements().add(presenter.getProject());
             }
         }
         catch (IOException exc) {
@@ -147,6 +155,6 @@ public class ProjectViewController {
     void removeSelectedProject() {
         Project selectedProject = tableView.getSelectionModel().getSelectedItem();
         projectDao.delete(selectedProject);
-        projectList.getProjects().remove(selectedProject);
+        projectList.getElements().remove(selectedProject);
     }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.scene.text.Font?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="436.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ParticipantEditPanePresenter">
    <children>
       <Label fx:id="dialogTypeLabel" maxWidth="1.7976931348623157E308" text="Add new participant">
@@ -21,17 +20,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <Label maxWidth="1.7976931348623157E308" text="Name:" />
             <Label maxWidth="1.7976931348623157E308" text="Surname:" GridPane.rowIndex="1" />
-            <Label maxWidth="1.7976931348623157E308" text="Age:" GridPane.rowIndex="2" />
+            <Label maxWidth="1.7976931348623157E308" text="Index number:" GridPane.rowIndex="2" />
             <Label maxWidth="1.7976931348623157E308" text="Email:" GridPane.rowIndex="3" />
 
             <TextField fx:id="nameInput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
             <TextField fx:id="surnameInput" prefWidth="231.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="ageInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="indexNumberInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="emailInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>

@@ -1,4 +1,4 @@
 package pl.edu.agh.gastronomiastosowana.model.exceptions;
 
-public class ChiefRemovalException extends Exception {
+public class LeaderIsSetException extends Exception {
 }

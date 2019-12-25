@@ -15,7 +15,6 @@ public class MainWindow extends Application {
         primaryStage.setTitle("GastroFaza");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-
     }
+
 }
