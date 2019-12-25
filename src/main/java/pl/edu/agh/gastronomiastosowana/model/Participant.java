@@ -162,6 +162,7 @@ public class Participant {
         return getParticipatesIn().contains(projectGroup);
     }
 
+    @SuppressWarnings("unused")
     public String getNameEmailLabel() {
         return getName() + " " + getSurname() + " (" + getEmail() + ")\n" + getIndexNumber();
     }
