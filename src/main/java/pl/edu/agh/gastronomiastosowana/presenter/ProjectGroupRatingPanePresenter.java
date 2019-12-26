@@ -48,6 +48,7 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
                 .stream()
                 .map(Participant::getFullName)
                 .collect(Collectors.toList());
+        groupParticipantsNames.add(0, "");
         participantNameBox.setItems(FXCollections.observableList(groupParticipantsNames));
     }
 
@@ -55,19 +56,22 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
     public Optional<String> validateInput() {
         String participantName = Optional.ofNullable(participantNameBox.getValue()).orElse("");
         String comment = commentTextArea.getText();
+        String gradeText = gradeTextField.getText().replace(",", ".");
         if(participantName.isEmpty() && singleMemberRatingRadioButton.isSelected()) {
             return Optional.of("No participant to rate was chosen");
         }
         try {
-            double ratingValue = Double.parseDouble(gradeTextField.getText());
+            double ratingValue = Double.parseDouble(gradeText);
             if (singleMemberRatingRadioButton.isSelected()) {
-                this.newRatings.add(new Rating(projectGroup.getParticipantByFullName(participantName), ratingValue, comment));
+                var ratedParticipant = projectGroup.getParticipantByFullName(participantName);
+                this.newRatings.add(new Rating(ratedParticipant, projectGroup, ratingValue, comment));
             } else {
                 for (Participant participant : this.projectGroup.getParticipants()) {
-                    this.newRatings.add(new Rating(participant, ratingValue, comment));
+                    this.newRatings.add(new Rating(participant, projectGroup, ratingValue, comment));
                 }
             }
         } catch (NumberFormatException e) {
+            if (gradeText.isEmpty()) return Optional.of("No grade was given");
             return Optional.of("Incorrect number format");
         } catch (InvalidRatingValueException e) {
             return Optional.of("Wrong rating value");

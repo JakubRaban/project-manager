@@ -26,17 +26,13 @@ public class Rating {
     @ManyToOne
     private ProjectGroup assessedGroup;
 
-    public Rating(Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
+    public Rating(Participant participant, ProjectGroup assessedGroup, double ratingValue, String comment) throws InvalidRatingValueException {
         this();
         setRatingValue(ratingValue);
         setSubmitDate(LocalDate.now());
         setComment(comment);
         setParticipant(participant);
-    }
-
-    public Rating(Participant participant, Critic critic, double ratingValue, String comment) throws InvalidRatingValueException {
-        this(participant, ratingValue, comment);
-        this.critic = critic;
+        setAssessedGroup(assessedGroup);
     }
 
     public Rating() {
@@ -85,6 +81,10 @@ public class Rating {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+
+    public void setAssessedGroup(ProjectGroup group) {
+        this.assessedGroup = group;
     }
 
 }
