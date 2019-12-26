@@ -4,23 +4,27 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
+import pl.edu.agh.gastronomiastosowana.model.Rating;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.InvalidRatingValueException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
 
     private ProjectGroup projectGroup;
+    private List<Rating> newRatings = new ArrayList<>();
+    private RatingDao ratingDao = new RatingDao();
 
     @FXML private RadioButton singleMemberRatingRadioButton;
-    @FXML private RadioButton allMembersRatingRadioButton;
     @FXML private ComboBox<String> participantNameBox;
     @FXML private TextField gradeTextField;
     @FXML private TextArea commentTextArea;
-    @FXML private Button okButton;
-    @FXML private Button cancelButton;
 
     public void initialize() {
         super.initialize("Rating");
@@ -39,7 +43,8 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
     }
 
     private void setParticipantsListItems() {
-        var groupParticipantsNames = projectGroup.getParticipants()
+        var groupParticipants = projectGroup.getParticipants();
+        var groupParticipantsNames = groupParticipants
                 .stream()
                 .map(Participant::getFullName)
                 .collect(Collectors.toList());
@@ -48,11 +53,32 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
 
     @Override
     public Optional<String> validateInput() {
-        return Optional.of("Not implemented");
+        String participantName = Optional.ofNullable(participantNameBox.getValue()).orElse("");
+        String comment = commentTextArea.getText();
+        if(participantName.isEmpty() && singleMemberRatingRadioButton.isSelected()) {
+            return Optional.of("No participant to rate was chosen");
+        }
+        try {
+            double ratingValue = Double.parseDouble(gradeTextField.getText());
+            if (singleMemberRatingRadioButton.isSelected()) {
+                this.newRatings.add(new Rating(projectGroup.getParticipantByFullName(participantName), ratingValue, comment));
+            } else {
+                for (Participant participant : this.projectGroup.getParticipants()) {
+                    this.newRatings.add(new Rating(participant, ratingValue, comment));
+                }
+            }
+        } catch (NumberFormatException e) {
+            return Optional.of("Incorrect number format");
+        } catch (InvalidRatingValueException e) {
+            return Optional.of("Wrong rating value");
+        }
+        return Optional.empty();
     }
 
     @Override
     public void update() {
-
+        for (Rating rating : newRatings) {
+            ratingDao.save(rating);
+        }
     }
 }

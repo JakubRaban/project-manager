@@ -28,13 +28,10 @@ public class Rating {
 
     public Rating(Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
         this();
-        if ((ratingValue < 0.0) || (ratingValue > 5.0)) {
-            throw new InvalidRatingValueException();
-        }
-        this.submitDate.setValue(LocalDate.now());
-        this.ratingValue.setValue(ratingValue);
-        this.comment.setValue(comment);
-        this.participant = participant;
+        setRatingValue(ratingValue);
+        setSubmitDate(LocalDate.now());
+        setComment(comment);
+        setParticipant(participant);
     }
 
     public Rating(Participant participant, Critic critic, double ratingValue, String comment) throws InvalidRatingValueException {
@@ -54,7 +51,8 @@ public class Rating {
     public double getRatingValue() {
         return ratingValue.getValue();
     }
-    public void setRatingValue(Double ratingValue) {
+    public void setRatingValue(Double ratingValue) throws InvalidRatingValueException {
+        if(ratingValue < 0.0 || ratingValue > 5.0) throw new InvalidRatingValueException();
         this.ratingValue.setValue(ratingValue);
     }
     public DoubleProperty ratingProperty() {
@@ -83,6 +81,10 @@ public class Rating {
     }
     public ObjectProperty<LocalDate> submitDateProperty() {
         return this.submitDate;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
     }
 
 }
