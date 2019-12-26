@@ -13,6 +13,8 @@ public class Rating {
     private int ratingID;
 
     @Transient
+    private StringProperty title;
+    @Transient
     private DoubleProperty ratingValue;
     @Transient
     private ObjectProperty<LocalDate> submitDate;
@@ -22,11 +24,9 @@ public class Rating {
     @ManyToOne
     private Participant participant;
     @ManyToOne
-    private Critic critic;
-    @ManyToOne
     private ProjectGroup assessedGroup;
 
-    public Rating(Participant participant, ProjectGroup assessedGroup, double ratingValue, String comment) throws InvalidRatingValueException {
+    public Rating(String title, ProjectGroup assessedGroup, Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
         this();
         setRatingValue(ratingValue);
         setSubmitDate(LocalDate.now());
@@ -39,8 +39,19 @@ public class Rating {
         ratingValue = new SimpleDoubleProperty(this, "ratingValue");
         submitDate = new SimpleObjectProperty<>(this, "submitDate");
         comment = new SimpleStringProperty(this, "comment");
+        title = new SimpleStringProperty(this, "title");
     }
 
+    @Access(AccessType.PROPERTY)
+    private String getTitle() {
+        return title.get();
+    }
+    private void setTitle(String title) {
+        this.title.set(title);
+    }
+    private StringProperty titleProperty() {
+        return this.title;
+    }
 
     @Access(AccessType.PROPERTY)
     @Column(nullable = false)

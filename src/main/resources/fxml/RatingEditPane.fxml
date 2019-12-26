@@ -50,15 +50,18 @@
         <rowConstraints>
           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Name" />
-            <Label text="Grade" GridPane.rowIndex="1" />
-            <Label text="Comment" GridPane.rowIndex="2" />
-            <ComboBox fx:id="participantNameBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
-            <TextField fx:id="gradeTextField" maxWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextArea fx:id="commentTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Rating title" />
+            <Label text="Participant name" GridPane.rowIndex="1" />
+            <Label text="Grade" GridPane.rowIndex="2" />
+            <Label text="Comment" GridPane.rowIndex="3" />
+            <TextField fx:id="titleTextField" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+            <ComboBox fx:id="participantNameBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <TextField fx:id="gradeTextField" maxWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextArea fx:id="commentTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <HBox alignment="CENTER_RIGHT" spacing="10.0">

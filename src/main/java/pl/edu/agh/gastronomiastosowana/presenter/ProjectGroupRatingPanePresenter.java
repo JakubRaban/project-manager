@@ -22,6 +22,7 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
     private RatingDao ratingDao = new RatingDao();
 
     @FXML private RadioButton singleMemberRatingRadioButton;
+    @FXML private TextField titleTextField;
     @FXML private ComboBox<String> participantNameBox;
     @FXML private TextField gradeTextField;
     @FXML private TextArea commentTextArea;
@@ -55,8 +56,9 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
     @Override
     public Optional<String> validateInput() {
         String participantName = Optional.ofNullable(participantNameBox.getValue()).orElse("");
-        String comment = commentTextArea.getText();
+        String comment = Optional.ofNullable(commentTextArea.getText()).orElse("");
         String gradeText = gradeTextField.getText().replace(",", ".");
+        String title = Optional.ofNullable(titleTextField.getText()).orElse("");
         if(participantName.isEmpty() && singleMemberRatingRadioButton.isSelected()) {
             return Optional.of("No participant to rate was chosen");
         }
@@ -64,10 +66,10 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
             double ratingValue = Double.parseDouble(gradeText);
             if (singleMemberRatingRadioButton.isSelected()) {
                 var ratedParticipant = projectGroup.getParticipantByFullName(participantName);
-                this.newRatings.add(new Rating(ratedParticipant, projectGroup, ratingValue, comment));
+                this.newRatings.add(new Rating(title, projectGroup, ratedParticipant, ratingValue, comment));
             } else {
                 for (Participant participant : this.projectGroup.getParticipants()) {
-                    this.newRatings.add(new Rating(participant, projectGroup, ratingValue, comment));
+                    this.newRatings.add(new Rating(title, projectGroup, participant, ratingValue, comment));
                 }
             }
         } catch (NumberFormatException e) {
