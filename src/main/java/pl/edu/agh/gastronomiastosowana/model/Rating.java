@@ -15,7 +15,7 @@ public class Rating {
     @Transient
     private StringProperty title;
     @Transient
-    private DoubleProperty ratingValue;
+    private ObjectProperty<RatingDetails> ratingValue;
     @Transient
     private ObjectProperty<LocalDate> submitDate;
     @Transient
@@ -26,8 +26,9 @@ public class Rating {
     @ManyToOne
     private ProjectGroup assessedGroup;
 
-    public Rating(String title, ProjectGroup assessedGroup, Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
+    public Rating(String title, ProjectGroup assessedGroup, Participant participant, RatingDetails ratingValue, String comment) throws InvalidRatingValueException {
         this();
+        setTitle(title);
         setRatingValue(ratingValue);
         setSubmitDate(LocalDate.now());
         setComment(comment);
@@ -36,10 +37,10 @@ public class Rating {
     }
 
     public Rating() {
-        ratingValue = new SimpleDoubleProperty(this, "ratingValue");
+        title = new SimpleStringProperty(this, "title");
+        ratingValue = new SimpleObjectProperty<>(this, "ratingValue");
         submitDate = new SimpleObjectProperty<>(this, "submitDate");
         comment = new SimpleStringProperty(this, "comment");
-        title = new SimpleStringProperty(this, "title");
     }
 
     @Access(AccessType.PROPERTY)
@@ -55,14 +56,17 @@ public class Rating {
 
     @Access(AccessType.PROPERTY)
     @Column(nullable = false)
-    public double getRatingValue() {
+    @Embedded
+    public RatingDetails getRatingValue() {
         return ratingValue.getValue();
     }
-    public void setRatingValue(Double ratingValue) throws InvalidRatingValueException {
-        if(ratingValue < 0.0 || ratingValue > 5.0) throw new InvalidRatingValueException();
+    public void setRatingValue(RatingDetails ratingValue) throws InvalidRatingValueException {
+        double rating = ratingValue.getRatingValue();
+        double maxRating = ratingValue.getMaxRatingValue();
+        if(rating < 0.0 || rating > maxRating) throw new InvalidRatingValueException();
         this.ratingValue.setValue(ratingValue);
     }
-    public DoubleProperty ratingProperty() {
+    public ObjectProperty<RatingDetails> ratingProperty() {
         return this.ratingValue;
     }
 
