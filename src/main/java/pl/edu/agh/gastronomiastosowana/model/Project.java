@@ -1,14 +1,14 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.scene.control.skin.TextAreaSkin;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.GroupAlreadyAssignedException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderIsSetException;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Project {
@@ -23,6 +23,8 @@ public class Project {
     private ObjectProperty<LocalDate> endDate;
     @Transient
     private ObjectProperty<ProjectGroup> projectGroup;
+    @OneToMany(mappedBy = "assessedProject")
+    private Set<Task> tasks;
 
     public Project(String projectName) {
         this();
@@ -35,6 +37,8 @@ public class Project {
         startDate = new SimpleObjectProperty<>(this, "startDate");
         endDate = new SimpleObjectProperty<>(this, "endDate");
         projectGroup = new SimpleObjectProperty<>(this, "projectGroup");
+
+        tasks = new HashSet<>();
     }
 
     @Access(AccessType.PROPERTY)
@@ -117,6 +121,16 @@ public class Project {
         projectGroup.set(new ProjectGroup(groupName));
         getProjectGroup().setProject(this);
     }
+
+    public void addTask(Task task){
+        tasks.add(task);
+    }
+
+    public void removeTask(Task task){
+        tasks.remove(task);
+    }
+
+    public void setTasks(Set<Task> tasks) {this.tasks = tasks;}
 
     public String toString() {
         return this.name.getValue();
