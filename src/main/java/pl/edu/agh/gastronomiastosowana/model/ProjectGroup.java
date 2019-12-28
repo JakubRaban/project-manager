@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class ProjectGroup {
@@ -125,11 +126,18 @@ public class ProjectGroup {
         return participants;
     }
 
-    public void setParticipants(Set<Participant> participants) {
-        this.participants = participants;
-    }
-
     public int getParticipantCount() {
         return this.participants.size();
+    }
+
+    public Participant getParticipantByFullName(String fullName) {
+        return participants.stream()
+                .filter(p -> p.getFullName().equals(fullName))
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
     }
 }

@@ -13,7 +13,9 @@ public class Rating {
     private int ratingID;
 
     @Transient
-    private DoubleProperty ratingValue;
+    private StringProperty title;
+    @Transient
+    private ObjectProperty<RatingDetails> ratingValue;
     @Transient
     private ObjectProperty<LocalDate> submitDate;
     @Transient
@@ -22,42 +24,49 @@ public class Rating {
     @ManyToOne
     private Participant participant;
     @ManyToOne
-    private Critic critic;
-    @ManyToOne
     private ProjectGroup assessedGroup;
 
-    public Rating(Participant participant, double ratingValue, String comment) throws InvalidRatingValueException {
+    public Rating(String title, ProjectGroup assessedGroup, Participant participant, RatingDetails ratingValue, String comment) throws InvalidRatingValueException {
         this();
-        if ((ratingValue < 0.0) || (ratingValue > 5.0)) {
-            throw new InvalidRatingValueException();
-        }
-        this.submitDate.setValue(LocalDate.now());
-        this.ratingValue.setValue(ratingValue);
-        this.comment.setValue(comment);
-        this.participant = participant;
-    }
-
-    public Rating(Participant participant, Critic critic, double ratingValue, String comment) throws InvalidRatingValueException {
-        this(participant, ratingValue, comment);
-        this.critic = critic;
+        setTitle(title);
+        setRatingValue(ratingValue);
+        setSubmitDate(LocalDate.now());
+        setComment(comment);
+        setParticipant(participant);
+        setAssessedGroup(assessedGroup);
     }
 
     public Rating() {
-        ratingValue = new SimpleDoubleProperty(this, "ratingValue");
+        title = new SimpleStringProperty(this, "title");
+        ratingValue = new SimpleObjectProperty<>(this, "ratingValue");
         submitDate = new SimpleObjectProperty<>(this, "submitDate");
         comment = new SimpleStringProperty(this, "comment");
     }
 
+    @Access(AccessType.PROPERTY)
+    private String getTitle() {
+        return title.get();
+    }
+    private void setTitle(String title) {
+        this.title.set(title);
+    }
+    private StringProperty titleProperty() {
+        return this.title;
+    }
 
     @Access(AccessType.PROPERTY)
     @Column(nullable = false)
-    public double getRatingValue() {
+    @Embedded
+    public RatingDetails getRatingValue() {
         return ratingValue.getValue();
     }
-    public void setRatingValue(Double ratingValue) {
+    public void setRatingValue(RatingDetails ratingValue) throws InvalidRatingValueException {
+        double rating = ratingValue.getRatingValue();
+        double maxRating = ratingValue.getMaxRatingValue();
+        if(rating < 0.0 || rating > maxRating) throw new InvalidRatingValueException();
         this.ratingValue.setValue(ratingValue);
     }
-    public DoubleProperty ratingProperty() {
+    public ObjectProperty<RatingDetails> ratingProperty() {
         return this.ratingValue;
     }
 
@@ -83,6 +92,14 @@ public class Rating {
     }
     public ObjectProperty<LocalDate> submitDateProperty() {
         return this.submitDate;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+
+    public void setAssessedGroup(ProjectGroup group) {
+        this.assessedGroup = group;
     }
 
 }
