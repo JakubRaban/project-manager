@@ -21,7 +21,8 @@ import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectGroupList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupEditPanePresenter;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupParticipantEditPanePresenter;
-import pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupRatingPanePresenter;
+import pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupRatingEditPanePresenter;
+import pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupRatingViewPanePresenter;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -43,6 +44,7 @@ public class ProjectGroupViewController {
     @FXML private Button editButton;
     @FXML private Button editParticipantsButton;
     @FXML private Button addGradeButton;
+    @FXML private Button viewGradeButton;
 
     @FXML
     private void initialize() {
@@ -64,6 +66,7 @@ public class ProjectGroupViewController {
         editButton.disableProperty().bind(disableBinding);
         editParticipantsButton.disableProperty().bind(disableBinding);
         addGradeButton.disableProperty().bind(disableBinding);
+        viewGradeButton.disableProperty().bind(disableBinding);
     }
 
     private void bindProjectProperties() {
@@ -172,8 +175,25 @@ public class ProjectGroupViewController {
             Dialog editDialog = new Dialog();
             FXMLLoader loader = new FXMLLoader();
             Parent parent = loader.load(getClass().getResourceAsStream("/fxml/RatingEditPane.fxml"));
-            ProjectGroupRatingPanePresenter presenter = loader.getController();
+            ProjectGroupRatingEditPanePresenter presenter = loader.getController();
             presenter.setItemInputType(ItemInputType.NEW_ITEM);
+            presenter.setProjectGroup(selectedGroup);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void viewRatings() {
+        ProjectGroup selectedGroup = tableView.getSelectionModel().getSelectedItem();
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/RatingViewPane.fxml"));
+            ProjectGroupRatingViewPanePresenter presenter = loader.getController();
             presenter.setProjectGroup(selectedGroup);
             presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
             editDialog.getDialogPane().setContent(parent);

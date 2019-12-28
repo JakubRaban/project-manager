@@ -21,8 +21,8 @@ public class Rating {
     @Transient
     private StringProperty comment;
 
-    @ManyToOne
-    private Participant participant;
+    @Transient
+    private ObjectProperty<Participant> participant;
     @ManyToOne
     private ProjectGroup assessedGroup;
 
@@ -41,9 +41,11 @@ public class Rating {
         ratingValue = new SimpleObjectProperty<>(this, "ratingValue");
         submitDate = new SimpleObjectProperty<>(this, "submitDate");
         comment = new SimpleStringProperty(this, "comment");
+        participant = new SimpleObjectProperty<>(this, "participant");
     }
 
     @Access(AccessType.PROPERTY)
+    @Column(nullable = false)
     private String getTitle() {
         return title.get();
     }
@@ -94,8 +96,16 @@ public class Rating {
         return this.submitDate;
     }
 
+    @Access(AccessType.PROPERTY)
+    @ManyToOne
+    public Participant getParticipant() {
+        return this.participant.get();
+    }
     public void setParticipant(Participant participant) {
-        this.participant = participant;
+        this.participant.set(participant);
+    }
+    public ObjectProperty<Participant> participantProperty() {
+        return this.participant;
     }
 
     public void setAssessedGroup(ProjectGroup group) {

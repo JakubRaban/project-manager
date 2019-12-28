@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
+public class ProjectGroupRatingEditPanePresenter extends AbstractPresenter {
 
     private ProjectGroup projectGroup;
     private List<Rating> newRatings = new ArrayList<>();
