@@ -18,6 +18,7 @@ import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
+import pl.edu.agh.gastronomiastosowana.presenter.TasksPresenter;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class ProjectViewController {
     @FXML private Button addNewButton;
     @FXML private Button editButton;
     @FXML private Button removeButton;
+    @FXML private Button tasksButton;
 
     @FXML private Label projectGroupNameLabel;
     @FXML private Label activeLabel;
@@ -61,6 +63,7 @@ public class ProjectViewController {
         BooleanBinding disableBinding = tableView.getSelectionModel().selectedItemProperty().isNull();
         editButton.disableProperty().bind(disableBinding);
         removeButton.disableProperty().bind(disableBinding);
+        tasksButton.disableProperty().bind(disableBinding);
     }
 
     private void bindProjectGroupProperties() {
@@ -101,6 +104,28 @@ public class ProjectViewController {
     @FXML
     private void loadFuture() {
         projectList.setElements(FXCollections.observableList(projectDao.findFutureProjects()));
+    }
+
+    @FXML
+    void showTasks(){
+        Project selectedProject = tableView.getSelectionModel().getSelectedItem();
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectTasksView.fxml"));
+            TasksPresenter presenter = loader.getController();
+            presenter.setItemInputType(ItemInputType.EDIT_ITEM);
+            presenter.setProject(selectedProject);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
+            if (presenter.isAccepted()) {
+                projectDao.save(selectedProject);
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
     @FXML
