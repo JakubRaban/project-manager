@@ -3,7 +3,10 @@ package pl.edu.agh.gastronomiastosowana.presenter;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.TaskDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
@@ -11,7 +14,9 @@ import pl.edu.agh.gastronomiastosowana.model.Project;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.Task;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.TaskList;
+import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class TasksPresenter extends AbstractPresenter{
@@ -33,7 +38,6 @@ public class TasksPresenter extends AbstractPresenter{
     private void bindButtonProperties(){
         BooleanBinding disableBinding = tableTasksView.getSelectionModel().selectedItemProperty().isNull();
 
-        addButton.disableProperty().bind(disableBinding);
         editButton.disableProperty().bind(disableBinding);
         removeButton.disableProperty().bind(disableBinding);
     }
@@ -62,15 +66,55 @@ public class TasksPresenter extends AbstractPresenter{
     }
 
     public void addTask(){
+        try{
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/TaskEditPane.fxml"));
+            TaskEditPanePresenter presenter = loader.getController();
+            presenter.setItemInputType(ItemInputType.NEW_ITEM);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
 
+            if (presenter.isAccepted()) {
+                presenter.getTask().setAssessedProject(this.project);
+                taskDao.save(presenter.getTask());
+                taskList.getElements().add(presenter.getTask());
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
-    public void removeTask(){
 
+    public void removeTask(){
+        Task selectedProject = tableTasksView.getSelectionModel().getSelectedItem();
+        taskDao.delete(selectedProject);
+        taskList.getElements().remove(selectedProject);
     }
 
     public void editTask(){
+        Task selectedTask = tableTasksView.getSelectionModel().getSelectedItem();
+        try{
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/TaskEditPane.fxml"));
+            TaskEditPanePresenter presenter = loader.getController();
+            presenter.setItemInputType(ItemInputType.NEW_ITEM);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            presenter.setTask(selectedTask);
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
 
+            if (presenter.isAccepted()) {
+                presenter.getTask().setAssessedProject(this.project);
+                taskDao.save(presenter.getTask());
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
     @Override

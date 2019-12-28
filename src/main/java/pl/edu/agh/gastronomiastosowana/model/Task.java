@@ -36,6 +36,8 @@ public class Task {
         details = new SimpleStringProperty(this, "details");
         creationDate = new SimpleObjectProperty<>(this, "creationDate");
         deadline = new SimpleObjectProperty<>(this, "deadline");
+
+        setCreationDate(LocalDate.now());
     }
 
     public Task(String title, String details, LocalDate creationDate, LocalDate deadline, Project assessedProject){
@@ -54,7 +56,7 @@ public class Task {
         return title.get();
     }
     public void setTitle(String title){
-        this.title.setValue(title);
+        this.title.set(title);
     }
     public StringProperty titleProperty(){
         return this.title;
@@ -65,7 +67,7 @@ public class Task {
         return details.get();
     }
     public void setDetails(String details){
-        this.details.setValue(details);
+        this.details.set(details);
     }
     public StringProperty detailsProperty(){
         return this.details;
@@ -77,7 +79,7 @@ public class Task {
         return creationDate.get();
     }
     public void setCreationDate(LocalDate creationDate){
-        this.creationDate.setValue(creationDate);
+        this.creationDate.set(creationDate);
     }
     public ObjectProperty<LocalDate> creationDateProperty(){
         return this.creationDate;
@@ -88,7 +90,7 @@ public class Task {
         return deadline.get();
     }
     public void setDeadline(LocalDate deadline){
-        this.deadline.setValue(deadline);
+        this.deadline.set(deadline);
     }
     public ObjectProperty<LocalDate> deadlineProperty(){
         return this.deadline;

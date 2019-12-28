@@ -42,7 +42,7 @@
                         </TableColumn>
                         <TableColumn prefWidth="125.0" text="CreationDate">
                            <cellValueFactory>
-                              <PropertyValueFactory property="crationDate" />
+                              <PropertyValueFactory property="creationDate" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn prefWidth="125.0" text="Deadline">
