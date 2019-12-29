@@ -15,5 +15,6 @@
         <mapping class="pl.edu.agh.gastronomiastosowana.model.ProjectGroup"/>
         <mapping class="pl.edu.agh.gastronomiastosowana.model.Rating"/>
         <mapping class="pl.edu.agh.gastronomiastosowana.model.Participant"/>
+        <mapping class="pl.edu.agh.gastronomiastosowana.model.Task"/>
     </session-factory>
 </hibernate-configuration>

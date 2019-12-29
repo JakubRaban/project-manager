@@ -31,6 +31,7 @@
                   <Button fx:id="addNewButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addNewProject" prefHeight="26.0" prefWidth="138.0" text="Add new project" />
                   <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project" />
                   <Button fx:id="removeButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeSelectedProject" prefHeight="28.0" prefWidth="120.0" text="Remove project" />
+                  <Button fx:id="tasksButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showTasks" prefHeight="28.0" prefWidth="120.0" text="Show tasks" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
