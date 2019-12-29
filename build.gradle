@@ -24,4 +24,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'org.hibernate:hibernate-core:5.4.9.Final'
     implementation 'mysql:mysql-connector-java:5.1.6'
+    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
 }
