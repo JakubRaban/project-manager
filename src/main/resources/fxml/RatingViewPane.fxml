@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<HBox fx:controller="pl.edu.agh.gastronomiastosowana.presenter.ProjectGroupRatingViewPanePresenter" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="739.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="110.0" spacing="5.0">
+         <children>
+            <Button fx:id="editRatingButton" onAction="#editRating" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit rating" />
+            <Button fx:id="removeRatingButton" onAction="#removeRating" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove rating" />
+            <Button fx:id="generateReportButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate report">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </VBox>
+      <TableView fx:id="ratingsTableView" HBox.hgrow="SOMETIMES">
+        <columns>
+            <TableColumn editable="false" prefWidth="80.79999697208405" text="Date" >
+                <cellValueFactory>
+                    <PropertyValueFactory property="submitDate" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn editable="false" prefWidth="104.80004119873047" text="Title" >
+                <cellValueFactory>
+                    <PropertyValueFactory property="ratingTitle" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="participantColumn" editable="false" prefWidth="147.20001220703125" text="Rated participant" />
+            <TableColumn fx:id="valueTableColumn" editable="false" prefWidth="39.19999694824219" text="Value"/>
+            <TableColumn fx:id="maxTableColumn" editable="false" prefWidth="39.19999694824219" text="Max" />
+            <TableColumn editable="false" prefWidth="194.40005493164062" text="Comment" >
+                <cellValueFactory>
+                    <PropertyValueFactory property="comment" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+      </TableView>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</HBox>

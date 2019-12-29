@@ -10,19 +10,22 @@ import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.Rating;
 import pl.edu.agh.gastronomiastosowana.model.RatingDetails;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.InvalidRatingValueException;
+import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
+public class ProjectGroupRatingEditPanePresenter extends AbstractPresenter {
 
     private ProjectGroup projectGroup;
+    private Rating rating;
     private List<Rating> newRatings = new ArrayList<>();
     private RatingDao ratingDao = new RatingDao();
 
     @FXML private RadioButton singleMemberRatingRadioButton;
+    @FXML private RadioButton allMembersRatingRadioButton;
     @FXML private TextField titleTextField;
     @FXML private ComboBox<String> participantNameBox;
     @FXML private TextField gradeTextField;
@@ -38,6 +41,22 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
     public void setProjectGroup(ProjectGroup projectGroup) {
         this.projectGroup = projectGroup;
         setParticipantsListItems();
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
+        if(rating != null) {
+            this.setItemInputType(ItemInputType.EDIT_ITEM);
+            this.singleMemberRatingRadioButton.setSelected(true);
+            this.allMembersRatingRadioButton.setDisable(true);
+            this.titleTextField.setText(rating.getRatingTitle());
+            this.participantNameBox.setValue(rating.getParticipant().getFullName());
+            this.participantNameBox.disableProperty().unbind();
+            this.participantNameBox.setDisable(true);
+            this.gradeTextField.setText(Double.toString(rating.getRatingDetails().getRatingValue()));
+            this.maxGradeTextField.setText(Double.toString(rating.getRatingDetails().getMaxRatingValue()));
+            this.commentTextArea.setText(rating.getComment());
+        }
     }
 
     private void bindComboBox() {
@@ -68,13 +87,19 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
         try {
             double ratingValue = Double.parseDouble(gradeText);
             double maxRatingValue = Double.parseDouble(maxGradeText);
-            if (singleMemberRatingRadioButton.isSelected()) {
-                var ratedParticipant = projectGroup.getParticipantByFullName(participantName);
-                this.newRatings.add(new Rating(title, projectGroup, ratedParticipant, new RatingDetails(ratingValue, maxRatingValue), comment));
-            } else {
-                for (Participant participant : this.projectGroup.getParticipants()) {
-                    this.newRatings.add(new Rating(title, projectGroup, participant, new RatingDetails(ratingValue, maxRatingValue), comment));
+            if (getItemInputType() == ItemInputType.NEW_ITEM) {
+                if (singleMemberRatingRadioButton.isSelected()) {
+                    var ratedParticipant = projectGroup.getParticipantByFullName(participantName);
+                    this.newRatings.add(new Rating(title, projectGroup, ratedParticipant, new RatingDetails(ratingValue, maxRatingValue), comment));
+                } else {
+                    for (Participant participant : this.projectGroup.getParticipants()) {
+                        this.newRatings.add(new Rating(title, projectGroup, participant, new RatingDetails(ratingValue, maxRatingValue), comment));
+                    }
                 }
+            } else {
+                rating.setRatingTitle(title);
+                rating.setRatingDetails(new RatingDetails(ratingValue, maxRatingValue));
+                rating.setComment(comment);
             }
         } catch (NumberFormatException e) {
             if (gradeText.isEmpty()) return Optional.of("No grade was given");
@@ -87,8 +112,10 @@ public class ProjectGroupRatingPanePresenter extends AbstractPresenter {
 
     @Override
     public void update() {
-        for (Rating rating : newRatings) {
-            ratingDao.save(rating);
+        if (getItemInputType() == ItemInputType.NEW_ITEM) {
+            ratingDao.save(newRatings.toArray(new Rating[0]));
+        } else {
+            ratingDao.update(rating);
         }
     }
 }
