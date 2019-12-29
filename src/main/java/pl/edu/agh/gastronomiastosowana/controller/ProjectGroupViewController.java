@@ -124,7 +124,7 @@ public class ProjectGroupViewController {
     }
 
     @FXML
-    void editSelectedProject() {
+    void editSelectedProjectGroup() {
         ProjectGroup selectedProjectGroup = tableView.getSelectionModel().getSelectedItem();
         try {
             Dialog editDialog = new Dialog();
@@ -146,7 +146,7 @@ public class ProjectGroupViewController {
         }
     }
 
-    public void editParticipants(ActionEvent actionEvent) {
+    public void editParticipants() {
         ProjectGroup selectedProjectGroup = tableView.getSelectionModel().getSelectedItem();
         try {
             Dialog editDialog = new Dialog();

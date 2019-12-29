@@ -1,9 +1,11 @@
 package pl.edu.agh.gastronomiastosowana.presenter;
 
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
@@ -21,14 +23,16 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
     @FXML private TableView<Rating> ratingsTableView;
     @FXML private Button editRatingButton;
     @FXML private Button removeRatingButton;
+    @FXML private TableColumn<Rating, Double> valueTableColumn;
+    @FXML private TableColumn<Rating, Double> maxTableColumn;
+    @FXML private TableColumn<Rating, String> participantColumn;
 
     public void initialize() {
         ratingList = new RatingList();
         ratingDao = new RatingDao();
-        setProjectGroup(new ProjectGroup());
         bindTableProperties();
         bindButtonProperties();
-        loadRatingList();
+        bindColumnsValueFactory();
     }
 
     private void bindTableProperties() {
@@ -41,12 +45,19 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
         removeRatingButton.disableProperty().bind(disableBinding);
     }
 
+    private void bindColumnsValueFactory() {
+        valueTableColumn.setCellValueFactory(p -> p.getValue().getRatingDetails().ratingValueProperty().asObject());
+        maxTableColumn.setCellValueFactory(p -> p.getValue().getRatingDetails().maxRatingValueProperty().asObject());
+        participantColumn.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getParticipant().getFullName()));
+    }
+
     private void loadRatingList() {
-        ratingList.setElements(FXCollections.observableList(ratingDao.findAll()));
+        ratingList.setElements(FXCollections.observableList(ratingDao.findRatingsByProjectGroup(projectGroup)));
     }
 
     public void setProjectGroup(ProjectGroup selectedGroup) {
-        this.projectGroup = projectGroup;
+        this.projectGroup = selectedGroup;
+        loadRatingList();
     }
 
     @Override

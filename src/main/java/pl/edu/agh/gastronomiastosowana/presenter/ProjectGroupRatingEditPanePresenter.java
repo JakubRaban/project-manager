@@ -87,8 +87,6 @@ public class ProjectGroupRatingEditPanePresenter extends AbstractPresenter {
 
     @Override
     public void update() {
-        for (Rating rating : newRatings) {
-            ratingDao.save(rating);
-        }
+        ratingDao.save(newRatings.toArray(new Rating[0]));
     }
 }

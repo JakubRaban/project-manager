@@ -28,7 +28,7 @@
             </VBox>
             <VBox spacing="5.0">
                <children>
-                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProject" prefHeight="28.0" prefWidth="116.0" text="Edit project group details" />
+                  <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editSelectedProjectGroup" prefHeight="28.0" prefWidth="116.0" text="Edit project group details" />
                </children>
                <children>
                   <Button fx:id="editParticipantsButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editParticipants" prefHeight="28.0" prefWidth="116.0" text="Edit participants" />

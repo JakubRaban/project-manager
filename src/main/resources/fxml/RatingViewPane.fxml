@@ -32,26 +32,14 @@
                     <PropertyValueFactory property="submitDate" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn editable="false" prefWidth="104.80004119873047" text="Rating title" >
+            <TableColumn editable="false" prefWidth="104.80004119873047" text="Title" >
                 <cellValueFactory>
-                    <PropertyValueFactory property="title" />
+                    <PropertyValueFactory property="ratingTitle" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn editable="false" prefWidth="147.20001220703125" text="Rated participant" >
-                <cellValueFactory>
-                    <PropertyValueFactory property="participant" />
-                </cellValueFactory>
-            </TableColumn>
-            <TableColumn editable="false" prefWidth="39.19999694824219" text="Value" >
-                <cellValueFactory>
-                    <PropertyValueFactory property="ratingValue" />
-                </cellValueFactory>
-            </TableColumn>
-            <TableColumn editable="false" prefWidth="39.19999694824219" text="Max" >
-                <cellValueFactory>
-                    <PropertyValueFactory property="maxRatingValue" />
-                </cellValueFactory>
-            </TableColumn>
+            <TableColumn fx:id="participantColumn" editable="false" prefWidth="147.20001220703125" text="Rated participant" />
+            <TableColumn fx:id="valueTableColumn" editable="false" prefWidth="39.19999694824219" text="Value"/>
+            <TableColumn fx:id="maxTableColumn" editable="false" prefWidth="39.19999694824219" text="Max" />
             <TableColumn editable="false" prefWidth="194.40005493164062" text="Comment" >
                 <cellValueFactory>
                     <PropertyValueFactory property="comment" />
