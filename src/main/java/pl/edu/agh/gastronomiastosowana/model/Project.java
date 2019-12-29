@@ -23,7 +23,7 @@ public class Project {
     private ObjectProperty<LocalDate> endDate;
     @Transient
     private ObjectProperty<ProjectGroup> projectGroup;
-    @OneToMany(mappedBy = "assessedProject")
+    @OneToMany(mappedBy = "assessedProject", cascade = CascadeType.REMOVE)
     private Set<Task> tasks;
 
     public Project(String projectName) {
