@@ -68,6 +68,12 @@ public class Rating {
         if(rating < 0.0 || rating > maxRating) throw new InvalidRatingValueException();
         this.ratingDetails.setValue(ratingDetails);
     }
+    public void setRatingValue(double value) {
+        getRatingDetails().setRatingValue(value);
+    }
+    public void setMaxRatingValue(double value) {
+        getRatingDetails().setMaxRatingValue(value);
+    }
     public ObjectProperty<RatingDetails> ratingDetailsProperty() {
         return this.ratingDetails;
     }

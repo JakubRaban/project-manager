@@ -13,8 +13,8 @@
    <children>
       <VBox prefHeight="200.0" prefWidth="110.0" spacing="5.0">
          <children>
-            <Button fx:id="editRatingButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit rating" />
-            <Button fx:id="removeRatingButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove rating" />
+            <Button fx:id="editRatingButton" onAction="#editRating" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit rating" />
+            <Button fx:id="removeRatingButton" onAction="#removeRating" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Remove rating" />
             <Button fx:id="generateReportButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Generate report">
                <VBox.margin>
                   <Insets top="20.0" />

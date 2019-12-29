@@ -4,7 +4,10 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
@@ -12,6 +15,7 @@ import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.Rating;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.RatingList;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
@@ -57,6 +61,30 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
 
     public void setProjectGroup(ProjectGroup selectedGroup) {
         this.projectGroup = selectedGroup;
+        loadRatingList();
+    }
+
+    @FXML
+    public void editRating() {
+        Rating selectedRating = ratingsTableView.getSelectionModel().getSelectedItem();
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/RatingEditPane.fxml"));
+            ProjectGroupRatingEditPanePresenter presenter = loader.getController();
+            presenter.setRating(selectedRating);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    public void removeRating() {
+        Rating selectedRating = ratingsTableView.getSelectionModel().getSelectedItem();
+        ratingDao.delete(selectedRating);
         loadRatingList();
     }
 
