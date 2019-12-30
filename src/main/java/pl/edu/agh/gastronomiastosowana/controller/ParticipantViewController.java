@@ -11,9 +11,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
-import pl.edu.agh.gastronomiastosowana.model.aggregations.AbstractAggregatedList;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
 import pl.edu.agh.gastronomiastosowana.model.importer.AbstractCsvImporter;
+import pl.edu.agh.gastronomiastosowana.model.importer.ImportResult;
 import pl.edu.agh.gastronomiastosowana.model.importer.ParticipantCsvImporter;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
 import pl.edu.agh.gastronomiastosowana.presenter.ParticipantEditPanePresenter;
@@ -118,8 +118,13 @@ public class ParticipantViewController {
         if (selectedFile == null) return;
         try {
             AbstractCsvImporter<Participant> importer = new ParticipantCsvImporter(selectedFile.toPath());
-            List<Participant> importedEntities = importer.doImport();
-            participantDao.save(importedEntities.toArray(Participant[]::new));
+            ImportResult<Participant> importResult = importer.doImport();
+            List<Participant> importedEntities = importResult.getImportedEntities();
+            if (importedEntities.size() > 0) {
+                participantDao.save(importedEntities.toArray(Participant[]::new));
+            }
+            new Alert(AlertType.INFORMATION, "Successfully imported " + importResult.getSuccessfullyImported()
+            + " entities. \n" + "Failed to import " + importResult.getNotImported() + " entities.").showAndWait();
             loadAll();
         } catch (IOException e) {
             new Alert(AlertType.ERROR, "Could not open specified file", ButtonType.CLOSE).showAndWait();

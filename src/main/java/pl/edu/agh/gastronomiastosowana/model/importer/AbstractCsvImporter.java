@@ -2,6 +2,7 @@ package pl.edu.agh.gastronomiastosowana.model.importer;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -10,34 +11,39 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import java.lang.reflect.ParameterizedType;
-
 import static java.util.Arrays.asList;
-import static java.util.Arrays.binarySearch;
 
 public abstract class AbstractCsvImporter<T> {
 
+    private Path importedFile;
     private List<String> headers;
     private List<String> settersNames;
     private List<String> fileLines;
     private List<T> createdEntities;
-    private Path importedFile;
     private Class<T> createdInstancesClass;
+    private ImportResult<T> importResult;
 
     public AbstractCsvImporter(Path importedFile) {
         this.importedFile = importedFile;
         this.createdEntities = new LinkedList<>();
         this.createdInstancesClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.importResult = new ImportResult<>();
     }
 
-    public List<T> doImport() throws IOException {
+    public ImportResult<T> doImport() throws IOException {
         getFileLines();
         populateHeaders();
         headersToSettersNames();
         for (String line : this.fileLines) {
-            createdEntities.add(createObjectFromLine(line));
+            T entity = createObjectFromLine(line);
+            if (entity != null) {
+                createdEntities.add(entity);
+            }
         }
-        return createdEntities;
+        importResult.setSuccessfullyImported(createdEntities.size());
+        importResult.setNotImported(fileLines.size() - createdEntities.size());
+        importResult.setImportedEntities(createdEntities);
+        return importResult;
     }
 
     private void getFileLines() throws IOException {
@@ -64,12 +70,14 @@ public abstract class AbstractCsvImporter<T> {
         catch (ReflectiveOperationException e) { e.printStackTrace(); }
 
         String[] fieldsNames = line.split(";");
+        if(fieldsNames.length != headers.size()) return null;
         for(int i = 0; i < fieldsNames.length; i++) {
             int finalI = i;
-            Method setterMethod = Arrays.stream(createdInstancesClass.getDeclaredMethods())
+            List<Method> setterMethods = Arrays.stream(createdInstancesClass.getDeclaredMethods())
                     .filter(aMethod -> aMethod.getName().equals(settersNames.get(finalI)))
-                    .collect(Collectors.toList())
-                    .get(0);
+                    .collect(Collectors.toList());
+            if(setterMethods.size() != 1) return null;
+            Method setterMethod = setterMethods.get(0);
             String valueToSet = fieldsNames[i];
             Class<?> acceptedSetterType = setterMethod.getParameterTypes()[0];
             String acceptedSetterTypeClassName = acceptedSetterType.getName();
@@ -88,10 +96,11 @@ public abstract class AbstractCsvImporter<T> {
                     case "LocalDate":
                         setterMethod.invoke(entity, LocalDate.parse(valueToSet));
                         break;
+                    default:
+                        return null;
                 }
             } catch (ReflectiveOperationException e) {
-                entity = null;
-                break;
+                return null;
             }
         }
         return entity;
