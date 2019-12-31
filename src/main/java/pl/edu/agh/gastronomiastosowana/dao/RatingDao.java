@@ -16,7 +16,7 @@ public class RatingDao extends GenericDao<Rating> {
         super();
     }
 
-    public List<Rating> findRatingsByProjectGroup(ProjectGroup projectGroup) {
+    public List<Rating> findByProjectGroup(ProjectGroup projectGroup) {
         final Session session = SessionService.getSession();
         TypedQuery<Rating> ratingQuery = session.createQuery(
                 "from Rating r where r.assessedGroup = :projectGroup", Rating.class

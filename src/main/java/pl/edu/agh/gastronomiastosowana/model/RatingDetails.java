@@ -46,4 +46,8 @@ public class RatingDetails {
     public DoubleProperty maxRatingValueProperty() {
         return maxRatingValue;
     }
+
+    public double ratingPercentage() {
+        return getRatingValue() / getMaxRatingValue() * 100;
+    }
 }

@@ -6,15 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.Rating;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.RatingList;
+import pl.edu.agh.gastronomiastosowana.model.reports.Report;
+import pl.edu.agh.gastronomiastosowana.model.reports.ReportGenerator;
+import pl.edu.agh.gastronomiastosowana.model.reports.SimpleTextProjectGroupRatingsSummaryReportGenerator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -56,7 +59,7 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
     }
 
     private void loadRatingList() {
-        ratingList.setElements(FXCollections.observableList(ratingDao.findRatingsByProjectGroup(projectGroup)));
+        ratingList.setElements(FXCollections.observableList(ratingDao.findByProjectGroup(projectGroup)));
     }
 
     public void setProjectGroup(ProjectGroup selectedGroup) {
@@ -86,6 +89,25 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
         Rating selectedRating = ratingsTableView.getSelectionModel().getSelectedItem();
         ratingDao.delete(selectedRating);
         loadRatingList();
+    }
+
+    @FXML
+    public void generateReport() {
+        ReportGenerator<String> reportGenerator = new SimpleTextProjectGroupRatingsSummaryReportGenerator(projectGroup);
+        Report<String> report = reportGenerator.generate();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save report for " + projectGroup.getGroupName());
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Text files (*.txt)", "*.txt"));
+        File selectedFile = fileChooser.showSaveDialog(null);
+        if (selectedFile == null) return;
+        try {
+            report.saveToFile(selectedFile.toPath());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Report saved to " + selectedFile.getAbsolutePath(), ButtonType.CLOSE);
+            alert.showAndWait();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to save report", ButtonType.CLOSE);
+            alert.showAndWait();
+        }
     }
 
     @Override
