@@ -1,13 +1,13 @@
 package pl.edu.agh.gastronomiastosowana.presenter;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import pl.edu.agh.gastronomiastosowana.dao.TaskDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.Project;
@@ -28,6 +28,7 @@ public class TasksPresenter extends AbstractPresenter{
     @FXML private Button removeButton;
     @FXML private Button editButton;
     @FXML private TableView<Task> tableTasksView;
+    @FXML private TextArea detailsTextArea;
 
 
 
@@ -40,6 +41,12 @@ public class TasksPresenter extends AbstractPresenter{
 
         editButton.disableProperty().bind(disableBinding);
         removeButton.disableProperty().bind(disableBinding);
+    }
+
+    private void bindLabelProperties(){
+        ObjectBinding<String> detailsBinding = Bindings.select(tableTasksView.getSelectionModel().selectedItemProperty(), "details");
+        detailsTextArea.textProperty().bind(detailsBinding);
+        detailsTextArea.setWrapText(true);
     }
 
     private void loadTasks(){
@@ -55,6 +62,7 @@ public class TasksPresenter extends AbstractPresenter{
         taskList = new TaskList();
 
         bindButtonProperties();
+        bindLabelProperties();
     }
 
     public void setProject(Project project){
@@ -101,7 +109,7 @@ public class TasksPresenter extends AbstractPresenter{
             FXMLLoader loader = new FXMLLoader();
             Parent parent = loader.load(getClass().getResourceAsStream("/fxml/TaskEditPane.fxml"));
             TaskEditPanePresenter presenter = loader.getController();
-            presenter.setItemInputType(ItemInputType.NEW_ITEM);
+            presenter.setItemInputType(ItemInputType.EDIT_ITEM);
             presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
             presenter.setTask(selectedTask);
             editDialog.getDialogPane().setContent(parent);
