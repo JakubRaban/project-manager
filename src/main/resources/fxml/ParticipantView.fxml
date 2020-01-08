@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="398.0" prefWidth="796.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ParticipantViewController">
+<HBox prefHeight="398.0" prefWidth="820.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.gastronomiastosowana.controller.ParticipantViewController">
    <children>
-      <TableView fx:id="tableView" maxWidth="1.7976931348623157E308" prefHeight="368.0" prefWidth="593.0">
+      <TableView fx:id="tableView" maxWidth="1.7976931348623157E308" prefHeight="368.0" prefWidth="680.0">
         <columns>
           <TableColumn prefWidth="120.0" text="Name">
               <cellValueFactory>
@@ -32,6 +32,11 @@
               <PropertyValueFactory property="email" />
             </cellValueFactory>
           </TableColumn>
+        <TableColumn prefWidth="80.0" text="Subscribed">
+            <cellValueFactory>
+                <PropertyValueFactory property="subscribed" />
+            </cellValueFactory>
+        </TableColumn>
           <TableColumn prefWidth="126.0" text="Registration date">
             <cellValueFactory>
               <PropertyValueFactory property="registrationDate" />

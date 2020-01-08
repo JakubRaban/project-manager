@@ -25,6 +25,8 @@ public class Participant {
     @Transient
     private StringProperty email;
     @Transient
+    private BooleanProperty subscribed;
+    @Transient
     private ObjectProperty<LocalDate> registrationDate;
     @Transient
     private SetProperty<ProjectGroup> participatesIn;
@@ -49,6 +51,7 @@ public class Participant {
         surname = new SimpleStringProperty(this, "surname");
         indexNumber = new SimpleStringProperty(this, "indexNumber");
         email = new SimpleStringProperty(this, "email");
+        subscribed = new SimpleBooleanProperty(this, "subscribed");
         registrationDate = new SimpleObjectProperty<LocalDate>(this, "registrationDate");
         ratings = new SimpleSetProperty<>(this, "ratings");
 
@@ -116,6 +119,18 @@ public class Participant {
     }
     public ObjectProperty<LocalDate> registrationDateProperty() {
         return registrationDate;
+    }
+
+    @Access(AccessType.PROPERTY)
+    @Column(nullable = false)
+    public boolean isSubscribed() {
+        return subscribed.get();
+    }
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed.set(subscribed);
+    }
+    public BooleanProperty subscribedProperty() {
+        return subscribed;
     }
 
     @Access(AccessType.PROPERTY)
