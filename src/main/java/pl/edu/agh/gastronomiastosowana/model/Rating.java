@@ -31,10 +31,10 @@ public class Rating {
         setRatingTitle(ratingTitle);
 		setRatingDetails(ratingDetails);
         setRatingDetails(ratingDetails);
-        //setSubmitDate(LocalDate.now());
-        //setComment(comment);
-        //setParticipant(participant);
-        //setAssessedGroup(assessedGroup);
+        setSubmitDate(LocalDate.now());
+        setComment(comment);
+        setParticipant(participant);
+        setAssessedGroup(assessedGroup);
     }
 
     public Rating() {
