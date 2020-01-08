@@ -29,11 +29,12 @@ public class Rating {
     public Rating(String ratingTitle, ProjectGroup assessedGroup, Participant participant, RatingDetails ratingDetails, String comment) throws InvalidRatingValueException {
         this();
         setRatingTitle(ratingTitle);
+		setRatingDetails(ratingDetails);
         setRatingDetails(ratingDetails);
-        setSubmitDate(LocalDate.now());
-        setComment(comment);
-        setParticipant(participant);
-        setAssessedGroup(assessedGroup);
+        //setSubmitDate(LocalDate.now());
+        //setComment(comment);
+        //setParticipant(participant);
+        //setAssessedGroup(assessedGroup);
     }
 
     public Rating() {
@@ -68,7 +69,10 @@ public class Rating {
         if(rating < 0.0 || rating > maxRating) throw new InvalidRatingValueException();
         this.ratingDetails.setValue(ratingDetails);
     }
-    public void setRatingValue(double value) {
+	public ObjectProperty<RatingDetails> ratingProperty() {
+        return this.ratingDetails;
+    }
+    public void setRatingValue(double value){
         getRatingDetails().setRatingValue(value);
     }
     public void setMaxRatingValue(double value) {
@@ -118,4 +122,7 @@ public class Rating {
         this.assessedGroup = group;
     }
 
+	public ProjectGroup getAssessedGroup() {
+        return assessedGroup;
+    }
 }

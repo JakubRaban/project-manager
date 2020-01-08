@@ -7,7 +7,9 @@ import javafx.collections.FXCollections;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;					  
 import java.util.Set;
+import java.util.stream.Collectors;								   
 
 @Entity
 public class Participant {
@@ -169,6 +171,40 @@ public class Participant {
     @SuppressWarnings("unused")
     public String getNameEmailLabel() {
         return getName() + " " + getSurname() + " (" + getEmail() + ")\n" + getIndexNumber();
+    }
+	//Leaderboard specific methods
+    private Set<Rating> getRatingsAssociatedWithGroup(Optional projectGroup){
+        if (projectGroup.isPresent()){
+            return ratings.stream().
+                    filter(rating -> rating.getAssessedGroup() == projectGroup.get()).
+                    collect(Collectors.toSet());
+        }
+        else{
+            return ratings;
+        }
+    }
+
+    public double getAverageRating(Optional projectGroup){
+        return getRatingsAssociatedWithGroup(projectGroup).stream().
+                mapToDouble(participant -> ( participant.getRatingDetails().getRatingValue() / participant.getRatingDetails().getMaxRatingValue())).
+                average().
+                orElse(Double.NEGATIVE_INFINITY);
+    }
+
+    public long getRatingCount(Optional projectGroup){
+        return getRatingsAssociatedWithGroup(projectGroup).size();
+    }
+
+    public double getRatingSum(Optional projectGroup){
+        return getRatingsAssociatedWithGroup(projectGroup).stream().
+                mapToDouble(participant -> participant.getRatingDetails().getRatingValue()).
+                sum();
+    }
+
+    public double getMaxRatingSum(Optional projectGroup){
+        return getRatingsAssociatedWithGroup(projectGroup).stream().
+                mapToDouble(participant -> participant.getRatingDetails().getMaxRatingValue()).
+                sum();
     }
 }
 

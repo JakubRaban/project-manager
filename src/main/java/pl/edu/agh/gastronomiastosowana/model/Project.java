@@ -1,6 +1,9 @@
 package pl.edu.agh.gastronomiastosowana.model;
 
 import javafx.beans.property.*;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.skin.TextAreaSkin;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.GroupAlreadyAssignedException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderIsSetException;
