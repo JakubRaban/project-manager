@@ -7,7 +7,7 @@
    <children>
       <TabPane maxWidth="1.7976931348623157E308" prefHeight="582.0" prefWidth="1025.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-            <Tab text="Projects">
+            <Tab text="Projects ">
             <fx:include source="ProjectView.fxml" />
             </Tab>
 
@@ -17,6 +17,10 @@
 
             <Tab text="ProjectGroups">
                 <fx:include source="ProjectGroupView.fxml" />
+            </Tab>
+
+            <Tab text="Leaderboard">
+                <fx:include source="LeaderboardView.fxml" />
             </Tab>
         </tabs>
       </TabPane>
