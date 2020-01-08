@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.Rating;
@@ -26,6 +27,7 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
     private ProjectGroup projectGroup;
     private RatingList ratingList;
     private RatingDao ratingDao;
+    private ParticipantDao participantDao;
 
     @FXML private TableView<Rating> ratingsTableView;
     @FXML private Button editRatingButton;
@@ -37,6 +39,8 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
     public void initialize() {
         ratingList = new RatingList();
         ratingDao = new RatingDao();
+        participantDao = new ParticipantDao();
+
         bindTableProperties();
         bindButtonProperties();
         bindColumnsValueFactory();
@@ -87,6 +91,10 @@ public class ProjectGroupRatingViewPanePresenter extends AbstractPresenter {
     @FXML
     public void removeRating() {
         Rating selectedRating = ratingsTableView.getSelectionModel().getSelectedItem();
+
+        selectedRating.getParticipant().getRating().remove(selectedRating);
+        participantDao.update(selectedRating.getParticipant());
+
         ratingDao.delete(selectedRating);
         loadRatingList();
     }

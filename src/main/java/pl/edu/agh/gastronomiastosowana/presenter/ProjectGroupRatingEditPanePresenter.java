@@ -4,6 +4,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
@@ -23,6 +24,7 @@ public class ProjectGroupRatingEditPanePresenter extends AbstractPresenter {
     private Rating rating;
     private List<Rating> newRatings = new ArrayList<>();
     private RatingDao ratingDao = new RatingDao();
+    private ParticipantDao participantDao = new ParticipantDao();
 
     @FXML private RadioButton singleMemberRatingRadioButton;
     @FXML private RadioButton allMembersRatingRadioButton;
@@ -114,7 +116,13 @@ public class ProjectGroupRatingEditPanePresenter extends AbstractPresenter {
     public void update() {
         if (getItemInputType() == ItemInputType.NEW_ITEM) {
             ratingDao.save(newRatings.toArray(new Rating[0]));
+
+            newRatings.get(0).getParticipant().addRating(newRatings.get(0));
+            participantDao.update(newRatings.get(0).getParticipant());
         } else {
+            rating.getParticipant().addRating(rating);
+            participantDao.update(rating.getParticipant());
+
             ratingDao.update(rating);
         }
     }

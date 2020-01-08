@@ -148,6 +148,7 @@ public class ProjectGroupViewController {
 
     public void editParticipants() {
         ProjectGroup selectedProjectGroup = tableView.getSelectionModel().getSelectedItem();
+
         try {
             Dialog editDialog = new Dialog();
             FXMLLoader loader = new FXMLLoader();
