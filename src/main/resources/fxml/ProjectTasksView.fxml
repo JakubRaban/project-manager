@@ -59,7 +59,7 @@
       </HBox>
       <HBox prefHeight="117.0" prefWidth="600.0">
          <children>
-            <Button mnemonicParsing="false" text="Ok" />
+            <Button mnemonicParsing="false" text="Ok" onAction="#reject"/>
          </children>
       </HBox>
    </children>
