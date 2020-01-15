@@ -14,9 +14,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
+import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.Project;
+import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
+import pl.edu.agh.gastronomiastosowana.model.mail.MailMessage;
+import pl.edu.agh.gastronomiastosowana.model.mail.SendMailService;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
 import pl.edu.agh.gastronomiastosowana.presenter.TasksPresenter;
 
@@ -27,6 +31,7 @@ public class ProjectViewController {
     private ProjectList projectList;
     private ProjectDao projectDao;
     private ProjectGroupDao projectGroupDao;
+    private SendMailService mailService;
 
     @FXML private TableView<Project> tableView;
 
@@ -47,6 +52,7 @@ public class ProjectViewController {
         projectList = new ProjectList();
         projectDao = new ProjectDao();
         projectGroupDao = new ProjectGroupDao();
+        mailService = new SendMailService();
 
         bindTableProperties();
         bindButtonProperties();
@@ -179,7 +185,21 @@ public class ProjectViewController {
     @FXML
     void removeSelectedProject() {
         Project selectedProject = tableView.getSelectionModel().getSelectedItem();
+        sendRemovedEmail(selectedProject);
         projectDao.delete(selectedProject);
         projectList.getElements().remove(selectedProject);
+    }
+
+    void sendRemovedEmail(Project project) {
+        ProjectGroup group = project.getProjectGroup();
+        for (Participant participant : group.getParticipants()) {
+            if (!participant.isSubscribed())
+                continue;
+            MailMessage message = new MailMessage();
+            message.setReceiver(participant.getEmail());
+            message.setSubject("Gastro update");
+            message.setText("Project " + project.getName() + "was removed");
+            mailService.sendEmail(message);
+        }
     }
 }
