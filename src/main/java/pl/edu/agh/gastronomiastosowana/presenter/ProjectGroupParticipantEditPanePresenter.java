@@ -15,6 +15,8 @@ import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderNotSetException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
+import pl.edu.agh.gastronomiastosowana.model.mail.MailMessage;
+import pl.edu.agh.gastronomiastosowana.model.mail.SendMailService;
 
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
     private ProjectGroupDao projectGroupDao;
     private ParticipantList currentUsersList;
     private ParticipantList notAssignedUsersList;
+    private SendMailService sendMailService;
 
     @FXML
     private TableView<Participant> tableCurrentUsersView;
@@ -59,6 +62,8 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
 
         currentUsersList = new ParticipantList();
         notAssignedUsersList = new ParticipantList();
+
+        sendMailService = new SendMailService();
 
         bindButtonProperties();
     }
@@ -106,6 +111,7 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
             projectGroup.removeParticipant(removedParticipant);
             tableNotAssignedUsersView.getItems().add(removedParticipant);
             tableCurrentUsersView.getItems().remove(removedParticipant);
+            sendParticipantRemovedMail(removedParticipant);
             setErrorLabel(null);
         } catch (NonPresentParticipantRemovalException e) {
             e.printStackTrace();
@@ -124,6 +130,7 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
         tableCurrentUsersView.getItems().add(addedParticipant);
 
         projectGroupDao.update(projectGroup);
+        sendParticipantAddedMail(addedParticipant);
         setErrorLabel(null);
     }
 
@@ -134,6 +141,7 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
         projectGroupDao.update(projectGroup);
         loadCurrentLeader();
         setErrorLabel(null);
+        sendLeaderSetMail(newLeader);
     }
 
     public Optional<String> validateInput() {
@@ -142,5 +150,36 @@ public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter 
 
     public void update() {
         return;
+    }
+
+    private void sendParticipantAddedMail(Participant participant) {
+        String message = "Participant " + participant.getFullName() + " was added to group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+    }
+
+    private void sendLeaderSetMail(Participant leader) {
+        String message = "Participant " + leader.getFullName() + " was made a leader of group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+    }
+
+    private void sendParticipantRemovedMail(Participant participant) {
+        String message = "Participant " + participant.getFullName() + " was removed from group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+        if (participant.isSubscribed())
+            sendMailTo(participant, message);
+    }
+
+    private void sendMailToAll(String message) {
+        for (Participant participant : projectGroup.getParticipants())
+            if (participant.isSubscribed())
+                sendMailTo(participant, message);
+    }
+
+    private void sendMailTo(Participant participant, String message) {
+        MailMessage mail = new MailMessage();
+        mail.setReceiver(participant.getEmail());
+        mail.setSubject("Gastronomia update");
+        mail.setText(message);
+        sendMailService.sendEmail(mail);
     }
 }

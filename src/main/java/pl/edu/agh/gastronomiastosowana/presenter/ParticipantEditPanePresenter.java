@@ -1,6 +1,7 @@
 package pl.edu.agh.gastronomiastosowana.presenter;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import pl.edu.agh.gastronomiastosowana.dao.RatingDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
@@ -19,6 +20,8 @@ public class ParticipantEditPanePresenter extends AbstractPresenter {
     private TextField indexNumberInput;
     @FXML
     private TextField emailInput;
+    @FXML
+    private CheckBox subscribedCheckBox;
 
     @FXML
     private void initialize() {
@@ -53,6 +56,7 @@ public class ParticipantEditPanePresenter extends AbstractPresenter {
         participant.setSurname(surnameInput.getText().trim());
         participant.setIndexNumber(indexNumberInput.getText());
         participant.setEmail(emailInput.getText());
+        participant.setSubscribed(subscribedCheckBox.isSelected());
     }
 
     public Participant getParticipant() {
@@ -66,11 +70,13 @@ public class ParticipantEditPanePresenter extends AbstractPresenter {
             surnameInput.clear();
             indexNumberInput.clear();
             emailInput.clear();
+            subscribedCheckBox.setSelected(false);
         } else {
             nameInput.setText(participant.getName());
             surnameInput.setText(participant.getSurname());
             indexNumberInput.setText(participant.getIndexNumber());
             emailInput.setText(participant.getEmail());
+            subscribedCheckBox.setSelected(participant.isSubscribed());
         }
     }
 }
