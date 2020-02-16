@@ -45,27 +45,30 @@ public class ProjectDao extends GenericDao<Project> {
         }
     }
 
-    /*
-     * If endDate is null, find all starting on or after startDate
-     * If startDate is null, find all starting on or before endDate
-     */
-    public List<Project> findProjectsStartingBetweenDates(LocalDate periodStart, LocalDate periodEnd) {
+    public List<Project> findActiveProjects() {
         Session session = SessionService.getSession();
         TypedQuery<Project> projectQuery = session.createQuery(
-                "from Project p where p.startDate >= :pstart and p.startDate <= :pend", Project.class
+                "from Project p where p.startDate <= :today and p.endDate >= :today", Project.class
         );
-        projectQuery.setParameter("pstart", periodStart);
-        projectQuery.setParameter("pend", periodEnd);
+        projectQuery.setParameter("today", LocalDate.now());
         return projectQuery.getResultList();
     }
 
-    public List<Project> findProjectsEndingBetweenDates(LocalDate periodStart, LocalDate periodEnd) {
+    public List<Project> findArchivalProjects() {
         Session session = SessionService.getSession();
         TypedQuery<Project> projectQuery = session.createQuery(
-                "from Project p where p.endDate >= :pstart and p.endDate <= :pend", Project.class
+                "from Project p where p.endDate < :today", Project.class
         );
-        projectQuery.setParameter("pstart", periodStart);
-        projectQuery.setParameter("pend", periodEnd);
+        projectQuery.setParameter("today", LocalDate.now());
+        return projectQuery.getResultList();
+    }
+
+    public List<Project> findFutureProjects() {
+        Session session = SessionService.getSession();
+        TypedQuery<Project> projectQuery = session.createQuery(
+                "from Project p where p.startDate > :today", Project.class
+        );
+        projectQuery.setParameter("today", LocalDate.now());
         return projectQuery.getResultList();
     }
 

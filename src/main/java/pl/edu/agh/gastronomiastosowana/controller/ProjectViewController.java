@@ -8,13 +8,21 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
+import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.Project;
+import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ProjectList;
 import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
+import pl.edu.agh.gastronomiastosowana.model.mail.MailMessage;
+import pl.edu.agh.gastronomiastosowana.model.mail.SendMailService;
 import pl.edu.agh.gastronomiastosowana.presenter.ProjectEditPanePresenter;
+import pl.edu.agh.gastronomiastosowana.presenter.TasksPresenter;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,17 +31,19 @@ public class ProjectViewController {
     private ProjectList projectList;
     private ProjectDao projectDao;
     private ProjectGroupDao projectGroupDao;
+    private SendMailService mailService;
 
     @FXML private TableView<Project> tableView;
 
     @FXML private Button addNewButton;
     @FXML private Button editButton;
     @FXML private Button removeButton;
+    @FXML private Button tasksButton;
 
     @FXML private Label projectGroupNameLabel;
     @FXML private Label activeLabel;
     @FXML private Label creationDateLabel;
-    @FXML private Label chiefLabel;
+    @FXML private Label leaderLabel;
     @FXML private Label participantCountLabel;
     @FXML private Label averageScoreLabel;
 
@@ -42,6 +52,7 @@ public class ProjectViewController {
         projectList = new ProjectList();
         projectDao = new ProjectDao();
         projectGroupDao = new ProjectGroupDao();
+        mailService = new SendMailService();
 
         bindTableProperties();
         bindButtonProperties();
@@ -51,13 +62,14 @@ public class ProjectViewController {
     }
 
     private void bindTableProperties() {
-        tableView.itemsProperty().bind(projectList.projectsProperty());
+        tableView.itemsProperty().bind(projectList.getProperty());
     }
 
     private void bindButtonProperties() {
         BooleanBinding disableBinding = tableView.getSelectionModel().selectedItemProperty().isNull();
         editButton.disableProperty().bind(disableBinding);
         removeButton.disableProperty().bind(disableBinding);
+        tasksButton.disableProperty().bind(disableBinding);
     }
 
     private void bindProjectGroupProperties() {
@@ -81,18 +93,45 @@ public class ProjectViewController {
     }
 
     @FXML
-    private void loadActive() {
-        projectList.setProjects(FXCollections.observableArrayList());
+    private void loadAll() {
+        projectList.setElements(FXCollections.observableList(projectDao.findAll()));
     }
 
     @FXML
-    private void loadAll() {
-        projectList.setProjects(FXCollections.observableList(projectDao.findAll()));
+    private void loadActive() {
+        projectList.setElements(FXCollections.observableList(projectDao.findActiveProjects()));
     }
 
     @FXML
     private void loadArchival() {
-        projectList.setProjects(FXCollections.observableArrayList());
+        projectList.setElements(FXCollections.observableList(projectDao.findArchivalProjects()));
+    }
+
+    @FXML
+    private void loadFuture() {
+        projectList.setElements(FXCollections.observableList(projectDao.findFutureProjects()));
+    }
+
+    @FXML
+    void showTasks(){
+        Project selectedProject = tableView.getSelectionModel().getSelectedItem();
+        try {
+            Dialog editDialog = new Dialog();
+            FXMLLoader loader = new FXMLLoader();
+            Parent parent = loader.load(getClass().getResourceAsStream("/fxml/ProjectTasksView.fxml"));
+            TasksPresenter presenter = loader.getController();
+            presenter.setItemInputType(ItemInputType.EDIT_ITEM);
+            presenter.setProject(selectedProject);
+            presenter.setWindow(editDialog.getDialogPane().getScene().getWindow());
+            editDialog.getDialogPane().setContent(parent);
+            editDialog.showAndWait();
+            if (presenter.isAccepted()) {
+                projectDao.save(selectedProject);
+            }
+        }
+        catch (IOException exc) {
+            throw new RuntimeException(exc);
+        }
     }
 
     @FXML
@@ -112,7 +151,7 @@ public class ProjectViewController {
                     projectGroupDao.save(presenter.getProject().getProjectGroup());
                 }
                 projectDao.save(presenter.getProject());
-                projectList.getProjects().add(presenter.getProject());
+                projectList.getElements().add(presenter.getProject());
             }
         }
         catch (IOException exc) {
@@ -146,7 +185,21 @@ public class ProjectViewController {
     @FXML
     void removeSelectedProject() {
         Project selectedProject = tableView.getSelectionModel().getSelectedItem();
+        sendRemovedEmail(selectedProject);
         projectDao.delete(selectedProject);
-        projectList.getProjects().remove(selectedProject);
+        projectList.getElements().remove(selectedProject);
+    }
+
+    void sendRemovedEmail(Project project) {
+        ProjectGroup group = project.getProjectGroup();
+        for (Participant participant : group.getParticipants()) {
+            if (!participant.isSubscribed())
+                continue;
+            MailMessage message = new MailMessage();
+            message.setReceiver(participant.getEmail());
+            message.setSubject("Gastro update");
+            message.setText("Project " + project.getName() + "was removed");
+            mailService.sendEmail(message);
+        }
     }
 }

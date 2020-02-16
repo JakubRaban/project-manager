@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.Objects;
 
-public class GenericDao<T> {
+public abstract class GenericDao<T> {
 
     private Class<T> entityType;
 
@@ -37,19 +37,25 @@ public class GenericDao<T> {
         return session.find(entityType, id);
     }
 
-    public void save(final T object) throws PersistenceException {
+    @SafeVarargs
+    public final void save(T... objects) throws PersistenceException {
         final Session session = SessionService.getSession();
         final Transaction tx = session.beginTransaction();
-        session.save(object);
-        session.merge(object);
+        for (T entity : objects) {
+            session.save(entity);
+            session.merge(entity);
+        }
         tx.commit();
     }
 
-    public void update(final T object) throws PersistenceException {
+    @SafeVarargs
+    public final void update(T ... objects) throws PersistenceException {
         final Session session = SessionService.getSession();
         final Transaction tx = session.beginTransaction();
-        session.update(object);
-        session.merge(object);
+        for (T entity : objects) {
+            session.update(entity);
+            session.merge(entity);
+        }
         tx.commit();
     }
 

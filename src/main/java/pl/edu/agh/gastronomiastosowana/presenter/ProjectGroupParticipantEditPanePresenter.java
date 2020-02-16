@@ -4,47 +4,45 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Window;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import pl.edu.agh.gastronomiastosowana.dao.ParticipantDao;
 import pl.edu.agh.gastronomiastosowana.dao.ProjectGroupDao;
 import pl.edu.agh.gastronomiastosowana.model.Participant;
 import pl.edu.agh.gastronomiastosowana.model.ProjectGroup;
 import pl.edu.agh.gastronomiastosowana.model.aggregations.ParticipantList;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.ChiefNotSetException;
-import pl.edu.agh.gastronomiastosowana.model.exceptions.ChiefRemovalException;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderNotSetException;
+import pl.edu.agh.gastronomiastosowana.model.exceptions.LeaderRemovalException;
 import pl.edu.agh.gastronomiastosowana.model.exceptions.NonPresentParticipantRemovalException;
-import pl.edu.agh.gastronomiastosowana.model.interactions.ItemInputType;
+import pl.edu.agh.gastronomiastosowana.model.mail.MailMessage;
+import pl.edu.agh.gastronomiastosowana.model.mail.SendMailService;
 
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-public class ProjectGroupParticipantEditPanePresenter {
+public class ProjectGroupParticipantEditPanePresenter extends AbstractPresenter {
 
     private ParticipantDao participantDao;
     private ProjectGroupDao projectGroupDao;
     private ParticipantList currentUsersList;
     private ParticipantList notAssignedUsersList;
+    private SendMailService sendMailService;
 
     @FXML
     private TableView<Participant> tableCurrentUsersView;
     @FXML
     private TableView<Participant> tableNotAssignedUsersView;
 
-    private Window window;
-    private boolean accepted;
-    private ItemInputType itemInputType;
     private ProjectGroup projectGroup;
 
-    @FXML private Label dialogTypeLabel;
-    @FXML private Label currentChiefLabel;
-    @FXML private Label errorLabel;
+    @FXML private Label currentLeaderLabel;
     @FXML private Button addButton;
     @FXML private Button removeButton;
-    @FXML private Button setChiefButton;
+    @FXML private Button setLeaderButton;
 
     private void bindTableProperties() {
-        tableCurrentUsersView.itemsProperty().bind(currentUsersList.participantsProperty());
-        tableNotAssignedUsersView.itemsProperty().bind(notAssignedUsersList.participantsProperty());
+        tableCurrentUsersView.itemsProperty().bind(currentUsersList.getProperty());
+        tableNotAssignedUsersView.itemsProperty().bind(notAssignedUsersList.getProperty());
     }
     private void bindButtonProperties() {
         // TODO: repair bindings
@@ -53,14 +51,11 @@ public class ProjectGroupParticipantEditPanePresenter {
 
         addButton.disableProperty().bind(disableBindingNonActiveUsers);
         removeButton.disableProperty().bind(disableBindingActiveUsers);
-        setChiefButton.disableProperty().bind(disableBindingActiveUsers);
+        setLeaderButton.disableProperty().bind(disableBindingActiveUsers);
     }
     @FXML
-    private void initialize() {
-        window = null;
-        accepted = false;
-        setItemInputType(ItemInputType.NEW_ITEM);
-        //setProjectGroup(new ProjectGroup());
+    public void initialize() {
+        super.initialize("Participants in Project group");
 
         participantDao = new ParticipantDao();
         projectGroupDao = new ProjectGroupDao();
@@ -68,60 +63,31 @@ public class ProjectGroupParticipantEditPanePresenter {
         currentUsersList = new ParticipantList();
         notAssignedUsersList = new ParticipantList();
 
+        sendMailService = new SendMailService();
+
         bindButtonProperties();
     }
 
     @FXML
-    private void accept() {
-        accepted = true;
-        window.hide();
-    }
-
-    @FXML
-    private void reject() {
-        accepted = false;
-        window.hide();
-    }
-
-    @FXML
     private void loadCurrentParticipants() {
-        System.out.println(projectGroup.getParticipants());
-        currentUsersList.setParticipants(FXCollections.observableList(participantDao.
-                findAll().
-                stream().
-                filter(x -> x.getWorksFor().contains(this.projectGroup)).
-                collect(Collectors.toList())));
+        currentUsersList.setElements(FXCollections.observableList(
+                participantDao.findParticipantsAssignedTo(this.projectGroup)
+        ));
     }
     @FXML
     private void loadNotAssignedParticipants() {
-
-        notAssignedUsersList.setParticipants(FXCollections.observableList(participantDao.
-                findAll().
-                stream().
-                filter(x -> ! x.getWorksFor().contains(this.projectGroup)).
-                collect(Collectors.toList())));
+        notAssignedUsersList.setElements(FXCollections.observableList(
+                participantDao.findParticipantsNotAssignedTo(this.projectGroup)
+        ));
     }
     @FXML
-    private void loadCurrentChief(){
-        Participant chief = projectGroup.getChief();
-        if(chief != null)
-            currentChiefLabel.setText("Current chief: " + chief.getName()
-                + " " + chief.getSurname());
+    private void loadCurrentLeader(){
+        Participant leader = projectGroup.getLeader();
+        if(leader != null)
+            currentLeaderLabel.setText("Current leader: " + leader.getName()
+                + " " + leader.getSurname());
         else
-            currentChiefLabel.setText("Current chief: none");
-    }
-
-
-    public void setItemInputType(ItemInputType itemInputType) {
-        this.itemInputType = itemInputType;
-        switch (this.itemInputType) {
-            case NEW_ITEM:
-                dialogTypeLabel.setText("Create new project");
-                break;
-            case EDIT_ITEM:
-                dialogTypeLabel.setText("Edit project");
-                break;
-        }
+            currentLeaderLabel.setText("Current leader: none");
     }
 
     public ProjectGroup getProjectGroup() {
@@ -129,25 +95,14 @@ public class ProjectGroupParticipantEditPanePresenter {
     }
 
     public void setProjectGroup(ProjectGroup projectGroup) {
-        System.out.println("2");
         this.projectGroup = projectGroup;
 
         loadCurrentParticipants();
         loadNotAssignedParticipants();
-
-        loadCurrentChief();
+        loadCurrentLeader();
 
         bindTableProperties();
         bindTableProperties();
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
-        window.setOnCloseRequest(event -> reject());
-    }
-
-    public boolean isAccepted() {
-        return accepted;
     }
 
     public void removeFromGroup(ActionEvent actionEvent) {
@@ -156,13 +111,13 @@ public class ProjectGroupParticipantEditPanePresenter {
             projectGroup.removeParticipant(removedParticipant);
             tableNotAssignedUsersView.getItems().add(removedParticipant);
             tableCurrentUsersView.getItems().remove(removedParticipant);
-            errorLabel.setText(null);
+            sendParticipantRemovedMail(removedParticipant);
+            setErrorLabel(null);
         } catch (NonPresentParticipantRemovalException e) {
             e.printStackTrace();
-        } catch (ChiefRemovalException e) {
-            errorLabel.setText("Cannot remove group chief from group");
+        } catch (LeaderRemovalException e) {
+            setErrorLabel("Cannot remove group leader from group");
         }
-
 
         projectGroupDao.update(projectGroup);
     }
@@ -175,15 +130,56 @@ public class ProjectGroupParticipantEditPanePresenter {
         tableCurrentUsersView.getItems().add(addedParticipant);
 
         projectGroupDao.update(projectGroup);
-        errorLabel.setText(null);
+        sendParticipantAddedMail(addedParticipant);
+        setErrorLabel(null);
     }
 
-    public void setAsChief(ActionEvent actionEvent) throws ChiefNotSetException {
-        Participant newChief = tableCurrentUsersView.getSelectionModel().getSelectedItem();
-        projectGroup.changeChief(newChief);
+    public void setAsLeader(ActionEvent actionEvent) throws LeaderNotSetException {
+        Participant newLeader = tableCurrentUsersView.getSelectionModel().getSelectedItem();
+        projectGroup.setLeader(newLeader);
 
         projectGroupDao.update(projectGroup);
-        loadCurrentChief();
-        errorLabel.setText(null);
+        loadCurrentLeader();
+        setErrorLabel(null);
+        sendLeaderSetMail(newLeader);
+    }
+
+    public Optional<String> validateInput() {
+        return Optional.empty();
+    }
+
+    public void update() {
+        return;
+    }
+
+    private void sendParticipantAddedMail(Participant participant) {
+        String message = "Participant " + participant.getFullName() + " was added to group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+    }
+
+    private void sendLeaderSetMail(Participant leader) {
+        String message = "Participant " + leader.getFullName() + " was made a leader of group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+    }
+
+    private void sendParticipantRemovedMail(Participant participant) {
+        String message = "Participant " + participant.getFullName() + " was removed from group " + projectGroup.getGroupName();
+        sendMailToAll(message);
+        if (participant.isSubscribed())
+            sendMailTo(participant, message);
+    }
+
+    private void sendMailToAll(String message) {
+        for (Participant participant : projectGroup.getParticipants())
+            if (participant.isSubscribed())
+                sendMailTo(participant, message);
+    }
+
+    private void sendMailTo(Participant participant, String message) {
+        MailMessage mail = new MailMessage();
+        mail.setReceiver(participant.getEmail());
+        mail.setSubject("Gastronomia update");
+        mail.setText(message);
+        sendMailService.sendEmail(mail);
     }
 }

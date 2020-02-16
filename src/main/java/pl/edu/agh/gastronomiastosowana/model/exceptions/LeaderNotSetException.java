@@ -1,4 +1,4 @@
 package pl.edu.agh.gastronomiastosowana.model.exceptions;
 
-public class ChiefIsSetException extends Exception {
+public class LeaderNotSetException extends Exception {
 }
